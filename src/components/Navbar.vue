@@ -107,13 +107,15 @@ export default {
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
     cursor: pointer;
+	transition-property: background-color;
+	transition-duration: 0.3s;
 }
 
 .search-form__input:focus {
 	background-color: white;
-}
+} 
 
-.search-form__input:focus > .search-form__button {
+.search-form__button:hover {
 	background-color: white;
 }
 
@@ -122,6 +124,8 @@ export default {
     font-size: 18px;
     margin: 6px;
 }
+
+
 
 .menu {
     display: flex;
