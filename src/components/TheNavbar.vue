@@ -31,30 +31,30 @@
                 <ul class="menu">
                     <li class="menu-item">
                         <router-link to="/" class="menu-item__link"
-                            >Home</router-link
+                            >Главная</router-link
                         >
                     </li>
                     <li class="menu-item">
                         <router-link to="/movies" class="menu-item__link"
-                            >Movies</router-link
+                            >Фильмы</router-link
                         >
                     </li>
                     <li class="menu-item">
                         <router-link to="/series" class="menu-item__link"
-                            >Tv Series</router-link
+                            >Сериалы</router-link
                         >
                     </li>
                 </ul>
-                <authed-user></authed-user>
+                <the-authed-user></the-authed-user>
             </div>
         </header>
     </div>
 </template>
 
 <script>
-import AuthedUser from "./AuthedUser.vue";
+import TheAuthedUser from "./TheAuthedUser.vue";
 export default {
-    components: { AuthedUser },
+    components: { TheAuthedUser },
     data() {
         return {
             inputPlaceholder: "Фильмы, сериалы, персоны",
@@ -68,6 +68,7 @@ export default {
     position: fixed;
     background-color: black;
     width: 100%;
+    z-index: 10;
 }
 
 .header-inside {
