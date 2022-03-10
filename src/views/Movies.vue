@@ -1,46 +1,45 @@
 <template>
     <div class="movies">
         <div class="container">
-            <h3 class="movies-titles">Списки</h3> 
+            <h3 class="movies-titles">Списки</h3>
             <div class="list">
-                <router-link
-                    :to="{ path: '/movies/' + title.url }"
-                    class="list-item"
+                <app-list-item
                     v-for="(title, id) in titles"
+                    :title="title"
                     :key="id"
-                >
-                    <img :src="title.src" alt="" class="img"/>
-                    <span class="list-title">{{ title.name }}</span>
-                    <div class="sel"></div>
-                </router-link>
+                ></app-list-item>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import AppListItem from "../components/AppListItem.vue";
 
-export default { 
+export default {
     data() {
         return {
             titles: [
                 {
                     name: "250 лучших фильмов",
-                    url: "top250/",
-                    src: 'img/top250.png'
+                    url: "/movies/top250",
+                    src: "img/top250.png",
                 },
                 {
                     name: "100 популярных фильма",
-                    url: "popular/",
-                    src: 'img/popular.png'
+                    url: "/movies/popular",
+                    src: "img/popular.png",
                 },
                 {
                     name: "Ожидаемые фильмы",
-                    url: "await/",
-                    src: 'img/wait.png'
+                    url: "/movies/awaiting",
+                    src: "img/wait.png",
                 },
             ],
         };
+    },
+    components: {
+        AppListItem,
     },
     methods: {
         async top250() {
@@ -65,48 +64,19 @@ export default {
 };
 </script>
 
-<style scoped>
-.img {
-    width: 88px;
-    height: 88px;
-    border-radius: 4px; 
-}
+<style scoped> 
 .movies {
     padding-top: 80px;
 }
 
-.movies-titles { 
+.movies-titles {
     font-size: 29px;
     margin-top: 36px;
 }
-.list { 
+.list {
     display: flex;
     justify-content: center;
     flex-direction: column;
     align-items: center;
-}
-.list-item { 
-    text-decoration: none;
-    color: black;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 40px;
-    margin: 10px;
-    min-width: 500px; 
-    border-radius: 4px;
-    transition-property: background-color, color;
-    transition-duration: 0.15s;
-}
-
-.list-item:hover {
-    background-color: rgb(202, 200, 200);
-    color: rgb(197, 130, 29);
-}
-
-.list-title { 
-    font-weight: bold;
-    font-size: 24px; 
-    margin-left: 20px;
-}
+} 
 </style>

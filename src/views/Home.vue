@@ -1,29 +1,49 @@
 <template>
     <div class="home">
-        <div class="container">
-            <!-- <loader v-if="$store.state.loading.films"></loader> -->
+        <div class="container home-inside">
+            <div class="video">
+
+                <div class="video-info">
+                    <img
+                        class="video-img"
+                        src="https://horrorzone.ru/uploads/_trailers/105738/screenshot_29.jpg"
+                        alt=""
+                    >
+                    <p class="video-par">
+                        Американский художественный фильм 2022 года режиссёра
+                        Мэтта Ривза с Робертом Паттинсоном в главной роли. Перезапуск
+                        серии фильмов о Бэтмене.
+                    </p>
+                    <span class="video-about">
+                        В ролях:
+                        <strong class="video-about__text">
+                            Роберт Паттинсон, Зоя Кравиц, Колин Фаррелл
+                        </strong>
+                    </span>
+                    <br>
+                    <span class="video-about">
+                        Режиссер:
+                        <strong class="video-about__text">
+                            Мэтт Ривз
+                        </strong>
+                    </span>
+                </div>
+
+                <iframe width="600" height="270"
+                        src="https://www.youtube.com/embed/hbnx6DJQ3xU?controls=0&showinfo=0&loop=1&modestbranding=1"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        ref="video"
+                        @mousemove="videoAction"
+                >
+                </iframe>
+            </div>
 
             <div class="premiere-films">
                 <h3 class="title">Премьеры</h3>
                 <div class="films">
-                    <div
-                        class="film"
-                        v-for="(item, id) in premiereList"
-                        :key="id"
-                    >
-                        <router-link
-                            :to="{ path: '/film/' + item.kinopoiskId + '/' }"
-                            class="link"
-                        >
-                            <img :src="item.posterUrlPreview" alt="" />
-                            <span class="film__title">{{ item.nameRu }}</span>
-                            <br />
-                            <span class="film__info"
-                                >{{ item.year }},
-                                {{ item.genres[0].genre }}</span
-                            >
-                        </router-link>
-                    </div>
+                    <app-slider :data="premiereList"></app-slider>
                 </div>
             </div>
         </div>
@@ -31,11 +51,15 @@
 </template>
 
 <script>
+import AppSlider from "../components/AppSlider.vue";
+
 export default {
+    components: {AppSlider},
     name: "Home",
     data() {
         return {
-            premiereList: [],
+            url: "",
+            premiereList: []
         };
     },
     methods: {
@@ -57,34 +81,70 @@ export default {
                 })
                 .catch((err) => console.log(err));
         },
+        videoAction() {
+
+        }
     },
     mounted() {
         this.getPremereFilm();
+
     },
 };
 </script>
 
 <style scoped>
-.home {
-    /* background-color: rgb(43, 43, 43); */
-    height: 100vh;
-    padding-top: 72px;
+.video-about {
+    font-size: 12px;
+    color: #b2b2b2;
 }
 
-.premiere-video {
+.video-about__text {
+    color: #f31111;
+    text-align: start;
+}
+
+.video-info {
+    background-color: black;
+    padding: 20px 105px;
+    color: white;
+    text-align: center;
+    max-width: 500px;
+}
+
+.video-img {
+    max-width: 150px;
+}
+
+.video-par {
+    display: inline-block;
+    font-size: 13px;
+}
+
+.home-inside {
     display: flex;
     justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-.link {
-    text-decoration: none;
+.video {
+    display: flex;
+    justify-content: space-between;
 }
+
+.home {
+    height: 100vh;
+    padding-top: 100px;
+}
+
 
 .title {
     font-size: 24px;
     line-height: 30px;
     font-weight: 700;
     margin-top: 20px;
+    margin-left: 70px;
+    margin-bottom: 15px;
 }
 
 .premiere-films {
@@ -95,39 +155,7 @@ export default {
 
 .films {
     display: flex;
-    overflow: auto;
+    justify-content: center;
 }
 
-.film img {
-    width: 140px;
-    height: 210px;
-}
-
-.film {
-    margin-left: 14px;
-    position: relative;
-}
-
-/* .score {
-    position: absolute;
-    top: 8px;
-    font-size: 12px;
-    left: -5px;
-    z-index: 2; 
-    color: white;
-    background-color: green;
-    border-radius: 4px;
-    padding: 3px 10px;
-} */
-
-.film__title {
-    font-size: 13px;
-    font-weight: 500;
-    color: #000;
-}
-.film__info {
-    color: rgba(0, 0, 0, 0.4);
-    font-size: 13px;
-    line-height: 15px;
-}
 </style>

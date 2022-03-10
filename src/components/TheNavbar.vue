@@ -3,7 +3,7 @@
         <header>
             <div class="container header-inside">
                 <router-link to="/" class="logo">
-                    <img src="/img/logo.svg" alt="" class="logo__image" />
+                    <img src="/img/logo.svg" alt="" class="logo__image"/>
                 </router-link>
                 <div class="search">
                     <form class="search-form">
@@ -11,6 +11,9 @@
                             type="text"
                             class="search-form__input"
                             :placeholder="inputPlaceholder"
+                            ref="search"
+                            v-model="value"
+                            @input="getInputVal"
                         />
                         <button class="search-form__button">
                             <svg
@@ -22,30 +25,44 @@
                                 <path
                                     fill="#000"
                                     fill-rule="evenodd"
-                                    d="M12.026 10.626L16 14.6 14.6 16l-3.974-3.974a5.5 5.5 0 1 1 1.4-1.4zM7.5 11.1a3.6 3.6 0 1 0 0-7.2 3.6 3.6 0 0 0 0 7.2z"
+                                    d="M12.026 10.626L16 14.6
+                                    14.6 16l-3.974-3.974a5.5 5.5 0
+                                    1 1 1.4-1.4zM7.5 11.1a3.6 3.6 0 1
+                                    0 0-7.2 3.6 3.6 0 0 0 0 7.2z"
                                 ></path>
                             </svg>
                         </button>
                     </form>
+
+                    <app-pop-up
+                        :data="searchItems"
+                        v-if="!$store.state.popup.search"
+                    ></app-pop-up>
                 </div>
                 <ul class="menu">
                     <li class="menu-item">
                         <router-link to="/" class="menu-item__link"
-                            >Главная</router-link
+                        >Главная
+                        </router-link
                         >
                     </li>
                     <li class="menu-item">
                         <router-link to="/movies" class="menu-item__link"
-                            >Фильмы</router-link
+                        >Фильмы
+                        </router-link
                         >
                     </li>
                     <li class="menu-item">
                         <router-link to="/series" class="menu-item__link"
-                            >Сериалы</router-link
+                        >Сериалы
+                        </router-link
                         >
                     </li>
                 </ul>
-                <the-authed-user></the-authed-user>
+
+                <div>
+                    <the-authed-user></the-authed-user>
+                </div>
             </div>
         </header>
     </div>
@@ -53,17 +70,56 @@
 
 <script>
 import TheAuthedUser from "./TheAuthedUser.vue";
+import AppPopUp from "@/components/AppPopUp";
+
 export default {
-    components: { TheAuthedUser },
+    components: {AppPopUp, TheAuthedUser},
     data() {
         return {
+            value: '',
             inputPlaceholder: "Фильмы, сериалы, персоны",
+            searchItems: []
         };
     },
+    methods: {
+        getInputVal() {
+            if (this.value.length > 0) {
+                this.$store.state.popup.search = false;
+
+                this.searchByKeyWord(this.$store.state.searchPage)
+            }
+
+            if (this.value.length === 0) {
+                this.$store.state.popup.search = true;
+            }
+        },
+        async searchByKeyWord(page) {
+
+            const url = `https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${this.value}&page=${page}`;
+
+            const api = "c3ee5da4-a7c1-41a4-af57-146b16d229d2";
+
+            await fetch(url, {
+                method: "GET",
+                headers: {
+                    "X-API-KEY": api,
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((json) => {
+                    this.searchItems = [...json.films]
+
+
+                    this.$store.state.loading.popupSearch = false
+                })
+                .catch((err) => console.log(err));
+        }
+    }
 };
 </script>
 
-<style scoped> 
+<style scoped>
 .navbar {
     position: fixed;
     background-color: black;
@@ -75,10 +131,11 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-} 
+}
 
 .search {
-    width: 340px; 
+    width: 340px;
+    position: relative;
 }
 
 .search-form {
@@ -86,15 +143,15 @@ export default {
     align-items: center;
     width: 100%;
     margin: 0;
-    padding: 0; 
+    padding: 0;
 }
 
 .search-form__input {
-	background-color: rgb(48, 47, 47);
+    background-color: rgb(48, 47, 47);
     color: #000;
     width: 100%;
     margin: 0;
-    padding: 8px 0 8px 16px; 
+    padding: 8px 0 8px 16px;
     font-size: 15px;
     border: none;
     outline: none;
@@ -103,35 +160,35 @@ export default {
 }
 
 .search-form__button {
-	background-color: rgb(48, 47, 47);
+    background-color: rgb(48, 47, 47);
     border: none;
     border-top-right-radius: 4px;
     border-bottom-right-radius: 4px;
     cursor: pointer;
-	transition-property: background-color;
-	transition-duration: 0.3s;
+    transition-property: background-color;
+    transition-duration: 0.3s;
 }
 
 .search-form__input:focus {
-	background-color: white;
-} 
-
-.search-form__button:hover {
-	background-color: white;
+    background-color: white;
 }
 
-.search-form__button svg { 
-	margin: 0;
+.search-form__button:hover {
+    background-color: white;
+}
+
+.search-form__button svg {
+    margin: 0;
     font-size: 18px;
     margin: 6px;
 }
-
 
 
 .menu {
     display: flex;
     justify-content: center;
 }
+
 .menu-item {
     list-style: none;
     margin-left: 10px;
@@ -140,11 +197,12 @@ export default {
 .menu-item:first-child {
     margin-left: 50px;
 }
+
 .menu-item__link {
     color: rgb(88, 87, 87);
     text-decoration: none;
     font-size: 18px;
-} 
+}
 
 .menu-item__link:hover {
     color: white;
@@ -152,7 +210,7 @@ export default {
 
 .active {
     border-bottom: 1px solid orange;
-	color: white;
+    color: white;
 }
 
 .logo {
@@ -176,4 +234,7 @@ export default {
     margin: 17px 0;
     border: none;
 }
+
+
+
 </style>
