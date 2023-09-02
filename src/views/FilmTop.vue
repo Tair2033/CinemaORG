@@ -9,24 +9,19 @@
         </div>
 
         <ul class="nav-right">
-          <li class="nav__li">
+          <li class="nav__li" @click="reload">
             <router-link to="/movies/top250" class="nav__element">
               Топ 250 фильмов
             </router-link>
           </li>
-          <li class="nav__li">
+          <li class="nav__li" @click="reload">
             <router-link to="/movies/popular" class="nav__element">
               Популярные фильмы
             </router-link>
           </li>
-          <li class="nav__li">
+          <li class="nav__li" @click="reload">
             <router-link to="/movies/awaiting" class="nav__element">
               Ожидаемые фильмы
-            </router-link>
-          </li>
-          <li class="nav__li">
-            <router-link to="/" class="nav__element">
-              Онлайн кинотеатр
             </router-link>
           </li>
         </ul>
@@ -107,7 +102,9 @@
             </p>
           </div>
           <div class="top-img">
-            <img class="top-img__element" src="/img/wait.png" alt="" />
+            <img class="top-img__element"
+              src="https://n1s1.hsmedia.ru/47/d7/1b/47d71bd6cb89912518d5d688017d1449/600x600_1_082b572772aec9155b3ad28970bc34e5@1200x1200_0xac120004_4674534611680099044.png"
+              alt="" />
           </div>
         </div>
 
@@ -133,25 +130,30 @@
 import AppTitleItem from "@/components/AppTitleItem";
 import AppPagination from "@/components/UI/AppPagination";
 import Loader from "@/components/UI/Loader";
+import { key } from "../APIKEY.json"
+
+
 export default {
   components: { Loader, AppPagination, AppTitleItem },
   data () {
     return {
+      key,
       top250: [],
       awaiting: [],
       popular: []
     }
   },
   methods: {
+    reload () {
+      location.reload();
+    },
     async getTop250 (page) {
       const url = `https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_250_BEST_FILMS&page=${page}`;
-
-      const api = "c3ee5da4-a7c1-41a4-af57-146b16d229d2";
 
       await fetch(url, {
         method: "GET",
         headers: {
-          "X-API-KEY": api,
+          "X-API-KEY": key,
           "Content-Type": "application/json",
         },
       })
@@ -165,12 +167,10 @@ export default {
     async getPopular (page) {
       const url = `https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_100_POPULAR_FILMS&page=${page}`;
 
-      const api = "c3ee5da4-a7c1-41a4-af57-146b16d229d2";
-
       await fetch(url, {
         method: "GET",
         headers: {
-          "X-API-KEY": api,
+          "X-API-KEY": key,
           "Content-Type": "application/json",
         },
       })
@@ -184,12 +184,10 @@ export default {
     async getAwaiting (page) {
       const url = `https://kinopoiskapiunofficial.tech/api/v2.2/films/top?type=TOP_AWAIT_FILMS&page=${page}`;
 
-      const api = "c3ee5da4-a7c1-41a4-af57-146b16d229d2";
-
       await fetch(url, {
         method: "GET",
         headers: {
-          "X-API-KEY": api,
+          "X-API-KEY": key,
           "Content-Type": "application/json",
         },
       })

@@ -6,30 +6,30 @@
         <div class="title-main">
           <div class="title-left">
             <div class="title-left__poster">
-              <img :src="title[0].posterUrl || ''" alt="" />
+              <img loading="lazy" width="100%" height="100%" :src="currentPageData.posterUrl || ''" alt="" />
             </div>
           </div>
           <div class="title-center">
             <div class="title-center__top">
               <div class="title-center__heading">
                 <div class="title-center__name">
-                  {{ title[0].nameRu }}
+                  {{ currentPageData.nameRu }}
                 </div>
                 <div class="title-center__originalname">
-                  {{ title[0].nameOriginal || "" }}
+                  {{ currentPageData.nameOriginal || "" }}
                   <div class="min-age">
                     {{ getMinAge }}
                   </div>
                 </div>
               </div>
-              <div class="title-center__line" v-if="!title[0].ratingKinopoisk">
+              <div class="title-center__line" v-if="!currentPageData.ratingKinopoisk">
                 -
                 <div class="raiting-count">
                   {{ countRating }}
                 </div>
               </div>
-              <div :style="{ color: ratingColor }" class="title-center__rating" v-if="title[0].ratingKinopoisk">
-                {{ title[0].ratingKinopoisk }}
+              <div :style="{ color: ratingColor }" class="title-center__rating" v-if="currentPageData.ratingKinopoisk">
+                {{ currentPageData.ratingKinopoisk }}
                 <div class="raiting-count">
                   {{ countRating }}
                 </div>
@@ -41,7 +41,11 @@
                 <div class="title-center__tickets">
                   Расписание и билеты
                 </div>
-                <div class="title-center__status">...</div>
+                <div class="title-center__status">
+                  <span>
+                    ...
+                  </span>
+                </div>
               </div>
 
               <span class="title-center__heading">
@@ -56,7 +60,7 @@
                     </div>
                   </div>
                   <div class="title-center__values">
-                    <div v-for="(val, id) in values[0]" :key="id" class="value">
+                    <div v-for="(val, id) in about" :key="id" class="value">
                       {{ val || "-" }}
                     </div>
                   </div>
@@ -80,30 +84,52 @@
         <div class="title-bottom">
           <ul class="title-bottom__menu">
             <li :style="menuStatus[id] == 'true' ? activeStyle : null
-              " v-for="(item, id) in items" :key="id" @click="menuAction(id)">
-              {{ item }}
+              " v-for="(section, id) in sections" :key="id" @click="menuAction(id)">
+              {{ section }}
             </li>
           </ul>
 
           <div class="title-bottom__description">
-            {{ title[0].description }}
+            {{ currentPageData.description }}
           </div>
 
           <div class="title-bottom__ratingsection">
-            <span>Рейтинг фильма</span>
-            <div class="title-bottom__rating">
+            <div class="title-raiting">
+              <span>Рейтинг фильма</span>
               <div :style="{ color: ratingColor }" class="title-bottom__ratingKinopoisk">
-                {{ title[0].ratingKinopoisk }}
+                {{ currentPageData.ratingKinopoisk }}
               </div>
               <div class="title-bottom__ratingImdb">
-                Imdb: {{ title[0].ratingImdb }}
+                Imdb: {{ currentPageData.ratingImdb }}
               </div>
             </div>
+            <div class="title-bottom__rating">
+              <div class="scores">
+                <div class="scores__positive score__item">
+                  <div class="scores__counter">
+                    {{ reviews.totalPositiveReviews }}
+                  </div>
+                  <div class="scores__title">Положительных</div>
+                </div>
+                <div class="scores__neutral score__item">
+                  <div class="scores__counter">
+                    {{ reviews.totalNeutralReviews }}
+                  </div>
+                  <div class="scores__title">Нейтральных</div>
+                </div>
+                <div class="scores__negative score__item">
+                  <div class="scores__counter">
+                    {{ reviews.totalNegativeReviews }}
+                  </div>
+                  <div class="scores__title">Отрицательных</div>
+                </div>
+              </div>
+              <div class="write-btn">Написать рецензию</div>
+            </div>
           </div>
-          <div class="write-btn">Написать рецензию</div>
 
           <div class="title-bottom__reviews">
-            <!-- TODO: Реализовать -->
+            <app-review v-for="(review, id) in reviews.items" :data="review" :key="id"></app-review>
           </div>
         </div>
       </div>
@@ -112,11 +138,15 @@
 </template>
 
 <script>
+import AppReview from "../components/UI/AppReview.vue";
 import Loader from "../components/UI/Loader.vue";
+import { key } from "../APIKEY.json"
+
 export default {
-  components: { Loader },
+  components: { Loader, AppReview },
   data () {
     return {
+      key,
       menuStatus: ["true", "false", "false"],
       activeStyle: {
         "font-weight": 500,
@@ -131,43 +161,59 @@ export default {
         "Возраст",
         "Время",
       ],
+      currentPageData: {},
       values: [],
-      title: [],
+      about: {},
+      reviews: {},
       actors: [],
       ratingColor: "",
-      items: ["Обзор", "Изображения", "Рецензии"],
+      sections: ["Обзор", "Изображения"],
     };
   },
   props: [""],
   methods: {
-    async getTitle (id) {
-      const url = `https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}`;
-
-      const api = "c3ee5da4-a7c1-41a4-af57-146b16d229d2";
+    async getReviews (id) {
+      const url = `https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}/reviews?page=1&order=DATE_DESC`;
 
       await fetch(url, {
         method: "GET",
         headers: {
-          "X-API-KEY": api,
+          "X-API-KEY": key,
           "Content-Type": "application/json",
         },
       })
         .then((res) => res.json())
         .then((json) => {
-          this.title.push(json);
+          this.reviews = { ...json }
+        })
+        .catch((err) => console.log(err));
+    },
+    async getTitle (id) {
+      const url = `https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}`;
 
-          this.values.push({
-            year: this.title[0].year,
+      await fetch(url, {
+        method: "GET",
+        headers: {
+          "X-API-KEY": key,
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          this.currentPageData = { ...json };
+
+          this.about = {
+            year: this.currentPageData.year,
             countries: [
-              ...this.title[0].countries.map((i) => i.country),
+              ...this.currentPageData.countries.map((i) => i.country),
             ].join(", "),
             genre: [
-              ...this.title[0].genres.map((i) => i.genre),
+              ...this.currentPageData.genres.map((i) => i.genre),
             ].join(", "),
-            slogan: this.title[0].slogan,
-            minAge: this.getMinAge,
-            time: this.title[0].filmLength + " мин.",
-          });
+            slogan: this.currentPageData.slogan,
+            minAge: this.getMinAge || 0,
+            time: this.currentPageData.filmLength + " мин.",
+          };
 
           this.getRatingColor(json.ratingKinopoisk);
 
@@ -178,12 +224,10 @@ export default {
     async getActors (id) {
       const url = `https://kinopoiskapiunofficial.tech/api/v1/staff?filmId=${id}`;
 
-      const api = "c3ee5da4-a7c1-41a4-af57-146b16d229d2";
-
       await fetch(url, {
         method: "GET",
         headers: {
-          "X-API-KEY": api,
+          "X-API-KEY": key,
           "Content-Type": "application/json",
         },
       })
@@ -212,7 +256,6 @@ export default {
       this.menuStatus[0] = "false";
       this.menuStatus[1] = "false";
       this.menuStatus[2] = "false";
-
       this.menuStatus[id] = "true";
 
       this.$forceUpdate();
@@ -220,11 +263,16 @@ export default {
   },
   computed: {
     getMinAge () {
-      const count = this.title[0].ratingAgeLimits;
+      const count = this.currentPageData.ratingAgeLimits;
+
+      if (count === null) {
+        return ""
+      }
+
       return count.match(/[\d]/gi).join("").trim() + "+";
     },
     countRating () {
-      const votes = this.title[0].ratingKinopoiskVoteCount;
+      const votes = this.currentPageData.ratingKinopoiskVoteCount;
 
       if (votes < 1000) {
         return votes;
@@ -239,11 +287,49 @@ export default {
   },
   mounted () {
     this.getTitle(this.$route.params.id);
+    this.getReviews(this.$route.params.id);
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.scores {
+  display: flex;
+
+  &__positive {
+    color: green;
+  }
+
+  &__neutral {}
+
+  &__negative {
+    color: red;
+  }
+}
+
+.score__item {
+  cursor: pointer;
+  margin-right: 40px;
+  border-radius: 7px;
+  padding: 10px;
+  transition: all 0.4s;
+  text-align: center;
+}
+
+.score__item:hover {
+  background-color: rgb(207, 205, 205);
+}
+
+.scores__title {
+  color: black;
+  font-size: calc(1.2vw);
+}
+
+.scores__counter {
+  font-weight: 600;
+  font-size: calc(1.5vw);
+}
+
 .title {
   padding-top: 60px;
   display: flex;
@@ -270,10 +356,16 @@ export default {
   display: flex;
 }
 
-.title-left__poster img {
-  max-width: 300px;
-  max-height: 400px;
+.title-left__poster {
+  width: 300px;
+  height: 400px;
   border-radius: 4px;
+}
+
+.title-left__poster img {
+  border: 1px solid rgb(229, 226, 226);
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   overflow: hidden;
 }
@@ -300,7 +392,6 @@ export default {
 .title-center__rating {
   width: 240px;
   display: flex;
-  align-items: center;
   justify-content: end;
   font-size: 40px;
   font-weight: 700;
@@ -324,6 +415,12 @@ export default {
   font-size: 13px;
   line-height: normal;
   margin-left: 15px;
+}
+
+.title-bottom__rating {
+  display: flex;
+  align-items: center;
+  cursor: default;
 }
 
 .min-age {
@@ -359,7 +456,12 @@ export default {
 
 .title-center__infoblock {
   display: flex;
-  align-items: center;
+  padding-right: 20px;
+  margin-top: 25px;
+}
+
+.title-bottom__reviews {
+  margin-top: 50px;
 }
 
 .point {
@@ -392,25 +494,31 @@ export default {
   font-size: 15px;
   line-height: 18px;
   cursor: pointer;
+  transition: all 0.4s;
   border-radius: 52px;
 }
 
 .title-center__tickets:hover {
-  background: rgb(252, 81, 2);
+  background: rgb(70, 95, 252);
 }
 
 .title-center__status {
   cursor: pointer;
   font-size: 25px;
   margin-left: 25px;
-  margin-bottom: 10px;
   border-radius: 50%;
-  padding-bottom: 10px;
   width: 40px;
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(234, 229, 229, 0.746);
+}
+
+.title-center__status span {
+  width: 100%;
+  height: 100%;
+  text-align: center;
 }
 
 .title-center__status:hover {
@@ -447,6 +555,7 @@ export default {
   line-height: 30px;
   font-weight: 700;
   padding: 20px 0;
+  margin-right: 25px;
 }
 
 .title-bottom__description {
@@ -455,16 +564,21 @@ export default {
   color: #393939;
 }
 
+.title-raiting {
+  display: flex;
+  align-items: center;
+}
+
 .title-bottom__rating {
   display: flex;
   align-items: center;
 }
 
 .title-bottom__ratingKinopoisk {
-  font-size: 46px;
+  font-size: 36px;
   line-height: 1;
   font-weight: 500;
-  display: inline-block;
+  display: block;
   margin-top: 8px;
   margin-bottom: 6px;
   line-height: 1;
@@ -480,7 +594,7 @@ export default {
   align-items: center;
   color: #333;
   border-color: rgba(0, 0, 0, 0.1);
-  background: #fff;
+  background: #cfcdcd;
   box-shadow: 0 1px 2px rgb(0 0 0 / 4%);
   padding: 8px 9px;
   font-size: 14px;
@@ -493,19 +607,17 @@ export default {
   border-style: solid;
   border-radius: 4px;
   outline: none;
-  margin-bottom: 40px;
 }
 
 .write-btn:hover {
   background: rgb(221, 220, 220);
+  border-color: rgba(42, 42, 42, 0.1);
 }
 
 .write-btn:before {
   content: "+";
   margin-right: 6px;
 }
-
-.title-bottom {}
 
 .title-bottom__menu {
   display: inline-flex;

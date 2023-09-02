@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     popup: {
-      search: true,
+      search: false,
       user: false
     },
     loading: {
@@ -22,14 +22,21 @@ export default new Vuex.Store({
     awaitingPageCount: 1,
     searchPage: 1
   },
+  getters: {},
   mutations: {
     changePage(state, page) {
       state.Top250PageCount = page;
     },
     nextPage(state) {
       state.Top250PageCount += 1;
+    },
+    toggleUserPopup(state) {
+      state.popup.user = !state.popup.user;
     }
   },
-  actions: {},
-  modules: {}
+  actions: {
+    toggleUserPopup(context) {
+      context.commit('toggleUserPopup');
+    }
+  }
 });

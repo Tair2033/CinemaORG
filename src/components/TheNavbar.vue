@@ -1,94 +1,105 @@
 <template>
-  <div class="navbar">
-    <header>
-      <div class="container header-inside">
+  <nav class="navbar">
+    <div class="container">
+      <div class="havbar__inside">
         <router-link to="/" class="logo">
           CinemaORG
         </router-link>
+
         <div class="search">
-          <form class="search-form">
-            <input type="text" class="search-form__input" :placeholder="inputPlaceholder" ref="search" v-model="value"
-              @input="getInputVal" />
-            <button class="search-form__button">
+          <form>
+            <input type="text" class="search__form-input" :placeholder="inputPlaceholder" ref="search"
+              @blur="hideSearchField" tabindex="0" v-model="searchInputValue" @input="getInputVal" />
+
+            <div class="search__form-button">
               <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
-                <path fill="#000" fill-rule="evenodd" d="M12.026 10.626L16 14.6
-                                    14.6 16l-3.974-3.974a5.5 5.5 0
-                                    1 1 1.4-1.4zM7.5 11.1a3.6 3.6 0 1
-                                    0 0-7.2 3.6 3.6 0 0 0 0 7.2z"></path>
+                <path fill="#000" fill-rule="evenodd"
+                  d="M12.026 10.626L16 14.6 14.6 16l-3.974-3.974a5.5 5.5 0 1 1 1.4-1.4zM7.5 11.1a3.6 3.6 0 1 0 0-7.2 3.6 3.6 0 0 0 0 7.2z">
+                </path>
               </svg>
-            </button>
+            </div>
           </form>
 
-          <app-pop-up :data="searchItems" v-if="!$store.state.popup.search"></app-pop-up>
+          <app-pop-up type="SEARCH" :data="searchItems" v-if="$store.state.popup.search"></app-pop-up>
         </div>
         <ul class="menu">
-          <li class="menu-item">
-            <router-link to="/" class="menu-item__link">Главная
+          <li class="menu__item">
+            <router-link to="/" class="menu__item-link">Главная
             </router-link>
           </li>
-          <li class="menu-item">
-            <router-link to="/movies" class="menu-item__link">Фильмы
+          <li class="menu__item">
+            <router-link to="/movies" class="menu__item-link">Фильмы
             </router-link>
           </li>
-          <li class="menu-item">
-            <router-link to="/series" class="menu-item__link">Сериалы
+          <li class="menu__item">
+            <router-link to="/series" class="menu__item-link">Сериалы
             </router-link>
           </li>
         </ul>
 
-        <div>
-          <the-authed-user :user="user"></the-authed-user>
-        </div>
+        <the-authed-user :user="user"></the-authed-user>
       </div>
-    </header>
-  </div>
+    </div>
+  </nav>
 </template>
 
 <script>
 import TheAuthedUser from "./TheAuthedUser.vue";
 import AppPopUp from "@/components/AppPopUp";
+import { key } from "../APIKEY.json"
+
 
 export default {
   components: { AppPopUp, TheAuthedUser },
   data () {
     return {
+      key,
       user: {
         ico: "https://animemotivation.com/wp-content/uploads/2023/03/makima-chainsaw-man-wallpaper-sinister.jpg"
       },
-      value: '',
+      searchInputValue: '',
       inputPlaceholder: "Фильмы, сериалы, персоны",
       searchItems: []
     };
   },
   methods: {
+    hideSearchField () {
+      this.searchInputValue = ""
+      // this.$store.state.popup.search = false
+    },
     getInputVal () {
-      if (this.value.length > 0) {
-        this.$store.state.popup.search = false;
+      if (this.searchInputValue.length > 0) {
+        this.$store.state.popup.search = true;
 
-        this.searchByKeyWord(this.$store.state.searchPage)
+        this.$store.state.loading.popupSearch = true
+
+
+        const timeout = setTimeout(() => {
+          this.searchByKeyWord(this.$store.state.searchPage)
+          this.$store.state.loading.popupSearch = false
+          clearTimeout(timeout)
+        }, 700)
       }
 
-      if (this.value.length === 0) {
-        this.$store.state.popup.search = true;
+      if (this.searchInputValue.length === 0) {
+        this.$store.state.popup.search = false;
       }
     },
     async searchByKeyWord (page) {
 
-      const url = `https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${this.value}&page=${page}`;
+      const url = `https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${this.searchInputValue}&page=${page}`;
 
-      const api = "c3ee5da4-a7c1-41a4-af57-146b16d229d2";
 
       await fetch(url, {
         method: "GET",
         headers: {
-          "X-API-KEY": api,
+          "X-API-KEY": key,
           "Content-Type": "application/json",
         },
       })
         .then((res) => res.json())
         .then((json) => {
           this.searchItems = [...json.films]
-
 
           this.$store.state.loading.popupSearch = false
         })
@@ -103,33 +114,41 @@ export default {
   color: white;
 }
 
+.auth__wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
 .navbar {
   position: fixed;
   background-color: black;
-  width: 100%;
-  z-index: 10;
+  width: 100vw;
+  min-height: 72px;
+  padding: 0 20px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
 }
 
-.header-inside {
+.havbar__inside {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .search {
-  width: 340px;
+  min-width: 340px;
   position: relative;
 }
 
-.search-form {
+.search form {
   display: flex;
   align-items: center;
-  width: 100%;
-  margin: 0;
-  padding: 0;
+  position: relative;
 }
 
-.search-form__input {
+.search__form-input {
   background-color: rgb(48, 47, 47);
   color: #000;
   width: 100%;
@@ -138,32 +157,36 @@ export default {
   font-size: 15px;
   border: none;
   outline: none;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
+  border-radius: 4px;
+  z-index: 11;
 }
 
-.search-form__button {
-  background-color: rgb(48, 47, 47);
+.search__form-button {
+  z-index: 40;
+  position: absolute;
+  right: 0px;
+  background: none;
   border: none;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
   cursor: pointer;
+  height: 100%;
   transition-property: background-color;
   transition-duration: 0.3s;
 }
 
-.search-form__input:focus {
+.search__form-input:focus {
   background-color: white;
 }
 
-.search-form__button:hover {
-  background-color: white;
+.search__form-button:hover {
+  background-color: rgb(226, 225, 225);
 }
 
-.search-form__button svg {
-  margin: 0;
+.search__form-button svg {
+  margin: 0 10px;
   font-size: 18px;
-  margin: 6px;
+  height: 100%;
 }
 
 
@@ -172,22 +195,22 @@ export default {
   justify-content: center;
 }
 
-.menu-item {
+.menu__item {
   list-style: none;
   margin-left: 10px;
 }
 
-.menu-item:first-child {
+.menu__item:first-child {
   margin-left: 50px;
 }
 
-.menu-item__link {
+.menu__item-link {
   color: rgb(88, 87, 87);
   text-decoration: none;
   font-size: 18px;
 }
 
-.menu-item__link:hover {
+.menu__item-link:hover {
   color: white;
 }
 
@@ -203,6 +226,7 @@ export default {
   text-decoration: none;
   margin-right: 100px;
   border: none;
+  font-weight: 600;
   font-size: calc(14px + 1vw);
 }
 

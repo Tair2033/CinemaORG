@@ -12,6 +12,6 @@ export const FilmsCategories = [
   {
     name: 'Ожидаемые фильмы',
     url: '/movies/awaiting',
-    ico: 'img/wait.png'
+    ico: 'https://n1s1.hsmedia.ru/47/d7/1b/47d71bd6cb89912518d5d688017d1449/600x600_1_082b572772aec9155b3ad28970bc34e5@1200x1200_0xac120004_4674534611680099044.png'
   }
 ];

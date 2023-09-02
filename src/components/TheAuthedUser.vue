@@ -1,18 +1,36 @@
 <template>
-  <div class="authed">
-    TODO: Реализация авторизации
+  <div class="authed" @click="togglePopup">
     <div class="authed-button">
       <img :src="user.ico" class="authed-button__image" />
     </div>
+    <app-pop-up v-if="$store.state.popup.user" type="USER"></app-pop-up>
   </div>
 </template>
 
 <script>
+import AppPopUp from './AppPopUp.vue';
+import store from '@/store'
+
 export default {
+  data () {
+    return {
+    }
+  },
+  methods: {
+    hideUserPop () {
+      store.dispatch('toggleUserPopup')
+    },
+    togglePopup () {
+      store.dispatch('toggleUserPopup')
+    },
+  },
   props: {
     user: {
       ico: String
     }
+  },
+  components: {
+    AppPopUp
   }
 };
 </script>
@@ -22,8 +40,9 @@ export default {
   z-index: 2;
   display: flex;
   align-items: center;
-  height: 72px;
-  padding: 0 15px;
+  width: 20vw;
+  justify-content: center;
+  position: relative;
 }
 
 .authed-button {

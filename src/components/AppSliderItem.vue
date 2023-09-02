@@ -1,6 +1,6 @@
 <template>
-	<router-link :to="{ path: '/film/' + item.kinopoiskId + '/' }" class="link film">
-		<img :src="item.posterUrlPreview" alt="" />
+	<router-link :to="'/film/' + getID" class="link film">
+		<img loading="lazy" :src="item.posterUrlPreview" alt="" />
 		<span class="film__title">{{ item.nameRu }}</span>
 		<br />
 		<span class="film__info">{{ item.year }}, {{ item.genres[0].genre }}</span>
@@ -9,7 +9,21 @@
 
 <script>
 export default {
-	props: ['item']
+	props: ['item'],
+	computed: {
+		getID () {
+
+			if (this.item.kinopoiskId != null) {
+				return this.item.kinopoiskId
+			}
+
+			if (this.item.filmId != null) {
+				return this.item.filmId
+			}
+
+			return false
+		}
+	}
 };
 </script>
 
@@ -18,9 +32,11 @@ export default {
 	width: 140px;
 	height: 210px;
 	border-radius: 5px;
+	background-color: #cccccc;
 }
 
 .film {
+	height: 100%;
 	margin-left: 5px;
 	position: relative;
 	padding: 10px;
@@ -40,9 +56,10 @@ export default {
 }
 
 .film__info {
-	color: rgba(0, 0, 0, 0.4);
+	color: rgba(0, 0, 0, 0.6);
 	font-size: 13px;
 	line-height: 15px;
+	font-weight: 600;
 }
 
 .link {
