@@ -1,92 +1,126 @@
 <template>
-    <div class="pagination-wrapper">
-        <div class="pagination">
-            <div
-                :style="(id + 1) === active? activeStyle: null"
-                v-for="(item, id) in len"
-                :key="id"
-                class="pagination-item"
-                @click="page(item)"
-            >
-                {{ item }}
-            </div>
-            <div class="arrow" @click="next">
-                &gt;
-            </div>
-        </div>
+  <div class="pagination-wrapper">
+    <div class="pagination">
+      <div :style="{ visibility: checkCurrentPage('LEFT') }" class="arrow" @click="previous">
+        &larr;
+      </div>
+      <div :style="getStyle(id)" v-for="(page, id) in settings.totalPages" :key="id" class="pagination-item"
+        @click="goToPage(page)">
+        {{ page }}
+      </div>
+      <div :style="{ visibility: checkCurrentPage('RIGHT') }" class="arrow" @click="next">
+        &rarr;
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
+import store from '../../store'
+
 export default {
-    data() {
-        return {
-            activeStyle: {
-                backgroundColor: '#222222',
-                color: 'white'
-            }
-        }
-    },
-    props: ['len', 'active', 'change'],
-    methods: {
-        page(item) {
-            this.$store.commit('changePage', item)
-            this.change(this.$store.state.Top250PageCount)
-            window.scrollTo({
-                top: 60
-            })
-        },
-        next() {
-            this.$store.commit('nextPage')
-            this.change(this.$store.state.Top250PageCount)
-            window.scrollTo({
-                top: 60
-            })
-        }
+  data () {
+    return {
+      activeStyle: {
+        backgroundColor: '#222222',
+        color: 'white'
+      }
     }
+  },
+  props: {
+    settings: {
+      totalPages: Number
+    },
+    callback: Function
+  },
+  methods: {
+    checkCurrentPage (arrow) {
+      if (arrow == "LEFT") {
+        if (this.$store.state.pageCounter == 1) {
+          return "hidden";
+        }
+      }
+
+      if (arrow == "RIGHT") {
+        if (this.$store.state.pageCounter == this.settings.totalPages) {
+          return "hidden";
+        }
+      }
+    },
+    goToPage (page) {
+      store.dispatch('changePage', page);
+      this.callback(this.$store.state.pageCounter);
+
+      window.scrollTo({
+        top: 0
+      })
+    },
+    getStyle (page) {
+      if (this.$store.state.pageCounter == page + 1) {
+        return this.activeStyle
+      }
+
+      return null;
+    },
+    previous () {
+      store.dispatch('previousPage');
+      this.callback(this.$store.state.pageCounter);
+
+      window.scrollTo({
+        top: 0
+      })
+    },
+    next () {
+      store.dispatch('nextPage');
+      this.callback(this.$store.state.pageCounter);
+
+      window.scrollTo({
+        top: 0
+      })
+    }
+  }
 }
 </script>
 
 <style scoped>
 .arrow {
-    font-size: 28px;
-    margin-left: 20px;
-    cursor: pointer;
+  font-size: 28px;
+  margin-left: 20px;
+  cursor: pointer;
 }
 
 .arrow:hover {
-    color: orange;
+  color: orange;
 }
 
 .pagination-wrapper {
-    padding: 10px;
-    display: flex;
-    justify-content: center;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
 }
 
 .pagination {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .pagination-item {
-    margin-left: 10px;
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  margin-left: 10px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .pagination-item:hover {
-    background-color: #222222;
-    color: white;
+  background-color: #222222;
+  color: white;
 }
 
 .pagination-item:first-child {
-    margin-left: 0px;
+  margin-left: 0px;
 }
-
 </style>

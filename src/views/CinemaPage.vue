@@ -1,7 +1,9 @@
 <template>
   <div class="title">
-    <loader style="padding-top: 50px" v-if="$store.state.loading.titlePage"></loader>
-    <div class="title" v-if="!$store.state.loading.titlePage">
+    <div class="loader__wrapper" v-if="$store.state.loading.titlePage">
+      <loader></loader>
+    </div>
+    <div class="title" v-show="!$store.state.loading.titlePage">
       <div class="container-title">
         <div class="title-main">
           <div class="title-left">
@@ -22,13 +24,13 @@
                   </div>
                 </div>
               </div>
-              <div class="title-center__line" v-if="!currentPageData.ratingKinopoisk">
+              <div class="title-center__line" v-show="!currentPageData.ratingKinopoisk">
                 -
                 <div class="raiting-count">
                   {{ countRating }}
                 </div>
               </div>
-              <div :style="{ color: ratingColor }" class="title-center__rating" v-if="currentPageData.ratingKinopoisk">
+              <div :style="{ color: ratingColor }" class="title-center__rating" v-show="currentPageData.ratingKinopoisk">
                 {{ currentPageData.ratingKinopoisk }}
                 <div class="raiting-count">
                   {{ countRating }}
@@ -55,13 +57,20 @@
               <div class="title-center__info">
                 <div class="title-center__infoblock">
                   <div class="title-center__points">
-                    <div v-for="(point, id) in points" :key="id" class="point">
-                      {{ point }}
+                    <div class="title-center__item" v-for="(point, id) in points" :key="id">
+                      <div class="point">
+                        {{ id }}
+                      </div>
+
+                      <div class="value">
+                        {{ point }}
+                      </div>
                     </div>
-                  </div>
-                  <div class="title-center__values">
-                    <div v-for="(val, id) in about" :key="id" class="value">
-                      {{ val || "-" }}
+
+                    <div class="title-center__values">
+                      <div v-for="(val, id) in about" :key="id" class="value">
+                        {{ val || "-" }}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -69,7 +78,7 @@
                 <div class="title-center__actors">
                   <span> В главных ролях </span>
                   <ul v-for="(actor, id) in actors" :key="id">
-                    <li v-if="actor.professionKey ==
+                    <li v-show="actor.professionKey ==
                       'ACTOR' && id < 15
                       " class="actor">
                       {{ actor.nameRu }}
@@ -153,14 +162,14 @@ export default {
         "border-bottom": "1px solid orange",
         "z-index": 5,
       },
-      points: [
-        "Год производства",
-        "Страна",
-        "Жанр",
-        "Слоган",
-        "Возраст",
-        "Время",
-      ],
+      points: {
+        "Год производства": "",
+        "Страна": "",
+        "Жанр": "",
+        "Слоган": "",
+        "Возраст": "",
+        "Время": "",
+      },
       currentPageData: {},
       values: [],
       about: {},
@@ -202,18 +211,18 @@ export default {
         .then((json) => {
           this.currentPageData = { ...json };
 
-          this.about = {
-            year: this.currentPageData.year,
-            countries: [
+          this.points = {
+            "Год производства": this.currentPageData.year,
+            "Страна": [
               ...this.currentPageData.countries.map((i) => i.country),
             ].join(", "),
-            genre: [
+            "Жанр": [
               ...this.currentPageData.genres.map((i) => i.genre),
             ].join(", "),
-            slogan: this.currentPageData.slogan,
-            minAge: this.getMinAge || 0,
-            time: this.currentPageData.filmLength + " мин.",
-          };
+            "Слоган": this.currentPageData.slogan,
+            "Возраст": this.getMinAge || 0,
+            "Время": this.currentPageData.filmLength + " мин.",
+          }
 
           this.getRatingColor(json.ratingKinopoisk);
 
@@ -265,11 +274,13 @@ export default {
     getMinAge () {
       const count = this.currentPageData.ratingAgeLimits;
 
-      if (count === null) {
-        return ""
+      if (count == null) {
+        return "возраст не установлен"
       }
 
-      return count.match(/[\d]/gi).join("").trim() + "+";
+      let age = count.replace('age', "") + "+";
+
+      return age;
     },
     countRating () {
       const votes = this.currentPageData.ratingKinopoiskVoteCount;
@@ -289,10 +300,30 @@ export default {
     this.getTitle(this.$route.params.id);
     this.getReviews(this.$route.params.id);
   },
+  beforeUpdate () {
+    window.scrollTo({
+      top: 0
+    })
+  }
 };
 </script>
 
 <style scoped lang="scss">
+.loader__wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 200px;
+}
+
+.title-center__item {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  width: 40vw;
+  margin-bottom: 10px;
+}
+
 .scores {
   display: flex;
 
@@ -316,6 +347,10 @@ export default {
   text-align: center;
 }
 
+.score__item:last-child {
+  margin-right: 0;
+}
+
 .score__item:hover {
   background-color: rgb(207, 205, 205);
 }
@@ -331,10 +366,9 @@ export default {
 }
 
 .title {
+  padding-left: 10px;
+  padding-right: 10px;
   padding-top: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .container-title {
@@ -354,18 +388,20 @@ export default {
 
 .title-main {
   display: flex;
+  justify-content: space-evenly;
 }
 
 .title-left__poster {
-  width: 300px;
+  min-width: 200px;
   height: 400px;
+  max-width: 300px;
   border-radius: 4px;
 }
 
 .title-left__poster img {
   border: 1px solid rgb(229, 226, 226);
   width: 100%;
-  height: 100%;
+  height: auto;
   object-fit: cover;
   overflow: hidden;
 }
@@ -386,20 +422,17 @@ export default {
   font-size: 40px;
   font-weight: 700;
   line-height: 48px;
-  width: 580px;
 }
 
 .title-center__rating {
-  width: 240px;
   display: flex;
   justify-content: end;
-  font-size: 40px;
+  font-size: calc(10px + 3vw);
   font-weight: 700;
   line-height: 48px;
 }
 
 .title-center__line {
-  width: 240px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -438,7 +471,7 @@ export default {
 .raiting-count {
   color: rgba(0, 0, 0, 0.4);
   margin-left: 6px;
-  font-size: 32px;
+  font-size: calc(10px + 2.2vw);
   font-weight: 200;
 }
 
@@ -466,8 +499,8 @@ export default {
 
 .point {
   color: rgba(0, 0, 0, 0.4);
-  width: 160px;
   font-size: 15px;
+  min-width: 150px;
   line-height: 18px;
   padding: 8px 0;
 }
@@ -491,7 +524,7 @@ export default {
   min-width: 44px;
   min-height: 44px;
   padding: 13px 24px;
-  font-size: 15px;
+  font-size: calc(10px + 0.8vw);
   line-height: 18px;
   cursor: pointer;
   transition: all 0.4s;
@@ -607,6 +640,7 @@ export default {
   border-style: solid;
   border-radius: 4px;
   outline: none;
+  margin-left: 10px;
 }
 
 .write-btn:hover {
@@ -644,5 +678,42 @@ export default {
 
 .title-bottom__menu li:hover {
   color: orange;
+}
+
+
+@media (max-width: 1100px) {
+  .title-center__actors {
+    display: none;
+  }
+
+  .title-center__top {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+  }
+
+  .title-center__rating {
+    justify-content: start;
+  }
+}
+
+@media (max-width: 680px) {
+  .title-bottom__rating {
+    flex-direction: column;
+  }
+
+  .write-btn {
+    margin-top: 15px;
+  }
+
+  .title-center__status {
+    margin-left: 4px;
+  }
+
+  .title-center__tickets {
+    padding: 7px 14px;
+    display: flex;
+    align-items: center;
+  }
 }
 </style>

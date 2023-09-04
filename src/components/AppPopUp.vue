@@ -13,25 +13,31 @@
           <loader></loader>
         </div>
 
-        <div v-if="!$store.state.loading.popupSearch">
-          <div class="popup__list" v-for="(item, id) in  data " :key="id" @click="hideFinded">
-            <router-link class="popup__item" :to="'/film/' + item.filmId">
-              <div class="popup__item-img">
-                <img loading="lazy" :src="item.posterUrlPreview" alt="" />
-              </div>
+        <div v-show="!$store.state.loading.popupSearch">
+          <div class="empty" v-if="data.length === 0">
+            Ничего не найдено :(
+          </div>
 
-              <div class="popup__item-info">
-                <div class="popup__item-name">
-                  {{ item.nameRu }}
+          <div v-if="data.length > 0">
+            <div class="popup__list" v-for="(item, id) in  data" :key="id" @click="hideFinded">
+              <router-link class="popup__item" :to="'/film/' + item.filmId">
+                <div class="popup__item-img">
+                  <img loading="lazy" :src="item.posterUrlPreview" alt="" />
                 </div>
-              </div>
 
-              <div class="popup__item-rating">
-                <div class="popup__item-kinopoisk" :style="{ color: ratingColorChanger(item.rating) }">
-                  {{ item.rating }}
+                <div class="popup__item-info">
+                  <div class="popup__item-name">
+                    {{ item.nameRu }}
+                  </div>
                 </div>
-              </div>
-            </router-link>
+
+                <div class="popup__item-rating">
+                  <div class="popup__item-kinopoisk" :style="{ color: ratingColorChanger(item.rating) }">
+                    {{ item.rating }}
+                  </div>
+                </div>
+              </router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -40,7 +46,7 @@
     <!-- User section -->
     <div class="user__wrapper" v-if="type === 'USER'">
       <div class="popup__section user__section">
-        <div class="popup__list" v-if="true">
+        <div class="popup__list">
           <div v-for="(item, id) in  userItems" :key="id">
             <div class="user__item">
               {{ item }}
@@ -59,6 +65,7 @@ export default {
   components: { Loader },
   data () {
     return {
+      isEmpty: false,
       userItems: [
         "Настройки",
         "Выход"
@@ -109,10 +116,18 @@ export default {
   box-shadow: -1px -3px 37px 0px rgba(34, 60, 80, 0.259);
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
+  min-height: 300px;
 }
 
 .search__wrapper::-webkit-scrollbar {
   display: none;
+}
+
+.empty {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 40%;
 }
 
 .user__wrapper {

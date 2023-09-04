@@ -3,7 +3,9 @@
     <div class="review">
       <div class="review__top">
         <div class="review__title">{{ data.title }}</div>
-        <div class="review__date">{{ data.date }}</div>
+        <div class="review__date">
+          {{ new Date(data.date).toLocaleDateString() }}
+        </div>
       </div>
 
       <div class="review__main">
@@ -65,18 +67,19 @@ export default {
   &__top {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: start;
     margin-bottom: 15px;
   }
 
   &__title {
-    font-size: calc(1.6vw);
+    font-size: calc(10px + 1.2vw);
     font-weight: 600;
   }
 
   &__date {
-    font-size: calc(1svw);
+    font-size: calc(1vw);
     font-weight: 600;
+    margin-left: 10px;
   }
 
   &__main {}

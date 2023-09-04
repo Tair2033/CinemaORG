@@ -51,12 +51,16 @@
           <loader v-if="$store.state.loading.top"></loader>
         </div>
 
-        <div v-if="!$store.state.loading.top">
-          <div class="list">
-            <app-title-item v-for="(item, id) in top250" :item="item" :key="id" :id="id"></app-title-item>
+        <div>
+          <div class="top__loader" v-if="$store.state.loading.filmList">
+            <Loader />
+          </div>
+
+          <div class="list" v-show="!$store.state.loading.filmList">
+            <app-title-item :currentPage="$store.state.Top250PageCount" v-for="(item, id) in top250" :item="item"
+              :key="id" :id="id"></app-title-item>
           </div>
         </div>
-
 
         <app-pagination :active="$store.state.Top250PageCount" :len="5" :change="getTop250">
         </app-pagination>
@@ -84,11 +88,12 @@
 
         <div v-if="!$store.state.loading.popular">
           <div class="list">
-            <app-title-item v-for="(item, id) in popular" :item="item" :key="id" :id="id"></app-title-item>
+            <app-title-item :currentPage="$store.state.popularPageCount" v-for="(item, id) in popular" :item="item"
+              :key="id" :id="id"></app-title-item>
           </div>
         </div>
 
-        <app-pagination :active="$store.state.Top250PageCount" :len="5" :change="getPopular">
+        <app-pagination :active="$store.state.popularPageCount" :len="5" :change="getPopular">
         </app-pagination>
       </div>
 
@@ -114,11 +119,12 @@
 
         <div v-if="!$store.state.loading.awaiting">
           <div class="list">
-            <app-title-item v-for="(item, id) in awaiting" :item="item" :key="id" :id="id"></app-title-item>
+            <app-title-item v-for="(item, id) in awaiting" :currentPage="$store.state.awaitingPageCount" :item="item"
+              :key="id" :id="id"></app-title-item>
           </div>
         </div>
 
-        <app-pagination :active="$store.state.Top250PageCount" :len="5" :change="getAwaiting">
+        <app-pagination :active="$store.state.awaitingPageCount" :len="5" :change="getAwaiting">
         </app-pagination>
       </div>
 
@@ -160,7 +166,7 @@ export default {
         .then((res) => res.json())
         .then((json) => {
           this.top250 = [...json.films]
-          this.$store.state.loading.top = false;
+          this.$store.state.loading.filmList = false;
         })
         .catch((err) => console.log(err));
     },
@@ -216,6 +222,11 @@ export default {
 </script>
 
 <style scoped>
+.top__loader {
+  display: flex;
+  justify-content: center;
+}
+
 .top-wrapper {
   padding: 0 30px;
 }

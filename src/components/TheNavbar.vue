@@ -28,16 +28,17 @@
             </router-link>
           </li>
           <li class="menu__item">
-            <router-link to="/movies" class="menu__item-link">Фильмы
-            </router-link>
-          </li>
-          <li class="menu__item">
-            <router-link to="/series" class="menu__item-link">Сериалы
+            <router-link to="/movies" class="menu__item-link">Фильмы и сериалы
             </router-link>
           </li>
         </ul>
 
-        <the-authed-user :user="user"></the-authed-user>
+        <the-authed-user v-if="$store.state.isAuth" :user="user">
+        </the-authed-user>
+
+        <div @click="login" class="entrance" v-if="!$store.state.isAuth">
+          Войти
+        </div>
       </div>
     </div>
   </nav>
@@ -47,6 +48,7 @@
 import TheAuthedUser from "./TheAuthedUser.vue";
 import AppPopUp from "@/components/AppPopUp";
 import { key } from "../APIKEY.json"
+import store from "../store";
 
 
 export default {
@@ -63,6 +65,9 @@ export default {
     };
   },
   methods: {
+    login () {
+      store.dispatch('login');
+    },
     hideSearchField () {
       this.searchInputValue = ""
       // this.$store.state.popup.search = false
@@ -112,6 +117,18 @@ export default {
 <style scoped>
 .router-link-active {
   color: white;
+}
+
+.entrance {
+  cursor: pointer;
+  color: white;
+  transition: all 0.4s;
+  padding: 5px;
+  margin-left: 50px;
+}
+
+.entrance:hover {
+  color: rgb(250, 170, 9);
 }
 
 .auth__wrapper {
@@ -208,6 +225,7 @@ export default {
   color: rgb(88, 87, 87);
   text-decoration: none;
   font-size: 18px;
+  white-space: nowrap;
 }
 
 .menu__item-link:hover {

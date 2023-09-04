@@ -1,6 +1,7 @@
 <template>
   <router-link :to="'/film/' + item.filmId" class="title-item">
-    <div class="title-counter">{{ id + 1 }}</div>
+    <div class="title-counter" v-if="currentPage == 1">{{ id + 1 }}</div>
+    <div class="title-counter" v-if="currentPage > 1">{{ (id + 1) + (10 * currentPage) }}</div>
 
     <div class="title-image">
       <img :src="item.posterUrlPreview" alt="">
@@ -48,7 +49,7 @@ export default {
       ].join(", ")
     }
   },
-  props: ['item', 'id'],
+  props: ['item', 'id', 'currentPage'],
   mounted () {
   }
 }

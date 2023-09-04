@@ -9,16 +9,13 @@
 
             <div class="main__about">
               <div class="main__about-logo">
-                <img src="https://i.servimg.com/u/f62/19/77/94/54/mbr8wj10.png" alt="">
+                <img loading="lazy" src="https://i.servimg.com/u/f62/19/77/94/54/mbr8wj10.png" alt="">
               </div>
 
               <div class="main__about-description">
                 К концу подходит время благоденствия, и лето, длившееся почти десятилетие, угасает. Вокруг средоточия
-                власти
-                Семи королевств, Железного трона, зреет заговор, и в это непростое время король решает искать поддержки у
-                друга юности Эддарда Старка.
-                Рыцари, мертвецы и драконы — в эпической битве за судьбы мира. Сериал, который навсегда изменил
-                телевидение
+                власти Семи королевств, Железного трона, зреет заговор, и в это непростое время король решает искать
+                поддержки у друга юности Эддарда Старка.
               </div>
 
               <div class="main__about-button">
@@ -40,8 +37,9 @@
 
       <section class="content__section">
 
-        <div class="content__info content__batman">
-          <img class="content__img" src="https://horrorzone.ru/uploads/_trailers/105738/screenshot_29.jpg" alt="">
+        <router-link to="/film/590286" class="content__info content__batman">
+          <img loading="lazy" class="content__img" src="https://horrorzone.ru/uploads/_trailers/105738/screenshot_29.jpg"
+            alt="">
           <p class="content__par">
             Американский художественный фильм 2022 года режиссёра
             Мэтта Ривза c Робертом Паттинсоном в главной роли. Перезапуск
@@ -60,12 +58,12 @@
               Мэтт Ривз
             </strong>
           </span>
-        </div>
+        </router-link>
 
         <iframe width="600" src="https://www.youtube-nocookie.com/embed/hbnx6DJQ3xU?si=P0WyrSMpD6D_DPyf&amp;controls=0"
           title="YouTube video player" frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen ref="video" @mousemove="videoAction"></iframe>
+          allowfullscreen ref="video"></iframe>
       </section>
 
       <section class="slider__section">
@@ -79,8 +77,8 @@
 
       <section class="content__section">
 
-        <div class="content__info content__bad">
-          <img class="content__img" src="https://logodix.com/logo/315391.png" alt="">
+        <router-link to="/film/404900" class="content__info content__bad">
+          <img loading="lazy" class="content__img" src="https://logodix.com/logo/315391.png" alt="">
           <p class="content__par">
             Школьный учитель химии Уолтер Уайт узнаёт, что болен раком лёгких. Уолтер решает заняться изготовлением
             метамфетамина. Для этого он привлекает своего бывшего ученика Джесси Пинкмана, когда-то исключённого из школы
@@ -92,12 +90,12 @@
               Брайан Крэнстон, Анна Ганн, Аарон Пол
             </strong>
           </span>
-        </div>
+        </router-link>
 
         <iframe width="600" src="https://www.youtube-nocookie.com/embed/ceqOTZnhgY8?si=_Q7I2PGd13sMf310&amp;controls=0"
           title="YouTube video player" frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          allowfullscreen @mousemove="videoAction"></iframe>
+          allowfullscreen></iframe>
       </section>
 
 
@@ -173,21 +171,25 @@ export default {
           this.premiereList.push(...json.items);
         })
         .catch((err) => console.log(err));
-    },
-    videoAction () {
-
     }
   },
   mounted () {
     this.getPremereFilms();
     this.getReleases();
   },
+  beforeUpdate () {
+    window.scrollTo({
+      top: 0
+    })
+  }
 };
 </script>
 
 <style scoped lang="scss">
 .main {
-  &__section {}
+  &__section {
+    overflow: hidden;
+  }
 
   &__title {
     position: relative;
@@ -198,16 +200,17 @@ export default {
     display: flex;
     justify-content: center;
     max-width: 1100px;
-    max-height: 500px;
+    min-height: 500px;
   }
 
   &__image img {
     width: 100%;
     height: auto;
+    object-fit: cover;
   }
 
   &__about {
-    color: white;
+    color: rgb(227, 225, 225);
     background: linear-gradient(90deg, rgba(0, 0, 0, 1) 58%, rgba(0, 0, 0, 0) 86%);
     display: flex;
     justify-content: center;
@@ -222,7 +225,7 @@ export default {
 
   &__about-logo {
     margin-left: 40px;
-    width: 240px;
+    width: calc(20px + 18vw);
   }
 
   &__about-logo img {
@@ -232,7 +235,9 @@ export default {
   }
 
   &__about-description {
-    font-size: 15px;
+    font-size: calc(10px + 0.4 * 1vw);
+    padding-right: 100px;
+    line-height: 1.4;
   }
 
   &__about-button {
@@ -241,7 +246,7 @@ export default {
 
   &__about-button a {
     color: white;
-    font-size: 17px;
+    font-size: calc(1.2vw);
     text-decoration: none;
     background-color: rgb(1, 1, 87);
     padding: 10px 15px;
@@ -282,13 +287,24 @@ export default {
   padding: 20px 105px;
 }
 
+.content__batman:hover {
+  background-color: rgb(26, 8, 8);
+}
+
 .content__bad {
-  background-color: rgba(167, 168, 168, 0.743);
+  background-color: rgba(192, 193, 193, 0.743);
   color: black;
   padding: 20px 60px;
 }
 
+.content__bad:hover {
+  background-color: rgba(216, 218, 218, 0.743);
+}
+
 .content__info {
+  transition: all 0.6s;
+  list-style: none;
+  text-decoration: none;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
   text-align: center;
@@ -368,6 +384,32 @@ export default {
     height: 260px;
     border-bottom-left-radius: 10px;
     border-top-right-radius: 0px;
+  }
+}
+
+@media (max-width: 900px) {
+  .main__about-description {
+    padding-right: 0;
+  }
+}
+
+@media (max-width: 610px) {
+  .main {
+    &__section {
+      overflow: hidden;
+    }
+
+    &__title {
+      position: relative;
+    }
+
+    &__image {
+      min-height: 340px;
+    }
+
+    &__image img {}
+
+    &__about {}
   }
 }
 </style>

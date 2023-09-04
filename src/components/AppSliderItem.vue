@@ -1,7 +1,9 @@
 <template>
 	<router-link :to="'/film/' + getID" class="link film">
-		<img loading="lazy" :src="item.posterUrlPreview" alt="" />
-		<span class="film__title">{{ item.nameRu }}</span>
+		<div class="film__img">
+			<img loading="lazy" :src="item.posterUrlPreview" alt="" />
+		</div>
+		<span class="film__title">{{ item.nameRu.slice(0, 18) }}</span>
 		<br />
 		<span class="film__info">{{ item.year }}, {{ item.genres[0].genre }}</span>
 	</router-link>
@@ -28,10 +30,15 @@ export default {
 </script>
 
 <style scoped>
-.film img {
-	width: 140px;
+.film__img {
 	height: 210px;
+	width: 140px;
 	border-radius: 5px;
+}
+
+.film img {
+	width: 100%;
+	height: auto;
 	background-color: #cccccc;
 }
 

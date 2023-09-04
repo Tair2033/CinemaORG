@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" ref="container">
     <navbar></navbar>
     <router-view />
   </div>
@@ -9,7 +9,7 @@
 import navbar from "@/components/TheNavbar";
 
 export default {
-  components: { navbar },
+  components: { navbar }
 };
 </script>
 
@@ -25,6 +25,7 @@ export default {
 
 body {
   font-family: 'Nunito', sans-serif;
+  overflow-x: hidden;
 }
 
 .container {
