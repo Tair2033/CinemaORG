@@ -92,9 +92,15 @@
 
             <div class="movies__list-items">
               <app-film-block v-for="item in content" :item="item" :key="item.kinopoiskId"></app-film-block>
+
+              <div class="movies__empty" v-if="content.length === 0">
+                <span>
+                  Ничего не найдено
+                </span>
+              </div>
             </div>
 
-            <div class="movies__list-pagination">
+            <div class="movies__list-pagination" v-if="content.length > 0">
               <app-pagination :callback="getContent" :settings="paginationSettings"></app-pagination>
             </div>
           </div>
@@ -134,7 +140,7 @@ export default {
         sortType: "RATING"
       },
       paginationSettings: {
-        totalPages: 6,
+        totalPages: 0,
       },
       content: [],
       pagesTotal: 0,
@@ -159,6 +165,8 @@ export default {
     getNewContent () {
       let sortInput = this.$refs.sortSelect;
       let selectedSortId = sortInput.selectedIndex
+
+      this.$store.state.pageCounter = 1;
 
       switch (sortInput[selectedSortId].value) {
         case "year":
@@ -246,7 +254,7 @@ export default {
     height: 100%;
     min-height: 100vh;
     padding-bottom: 50px;
-    border-bottom: 1px solid rgb(189, 189, 189);
+    border-bottom: 1px solid rgb(217, 216, 216);
   }
 
   &__content {
@@ -264,8 +272,20 @@ export default {
     min-width: 200px;
     height: 100%;
     padding: 100px 25px 0 25px;
-    border-right: 1px solid rgb(189, 189, 189);
-    background-color: rgb(227, 225, 225);
+    border-right: 1px solid rgb(217, 216, 216);
+    background-color: rgb(241, 239, 239);
+  }
+
+  &__empty {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+  }
+
+  &__empty span {
+    display: block;
+    text-align: center;
   }
 
   &__form {
@@ -285,7 +305,9 @@ export default {
 
   &__form-type select {
     border-radius: 5px;
-    padding: 5px;
+    min-width: 120px;
+    padding: 3px;
+    font-size: 16px;
   }
 
   &__filters-item {
@@ -340,7 +362,7 @@ export default {
 
   &__search button {
     padding: 3px 5px;
-    font-size: 18px;
+    font-size: 24px;
     border-radius: 5px;
     border: none;
     cursor: pointer;
@@ -364,6 +386,10 @@ export default {
     font-size: 24px;
     margin-right: 10px;
     padding-left: 10px;
+  }
+
+  &__search input::placeholder {
+    color: rgb(199, 200, 201);
   }
 }
 

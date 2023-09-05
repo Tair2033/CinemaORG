@@ -11,7 +11,7 @@
       <div class="title-about__left">
         <div class="title-about__name">{{ item.nameRu }}</div>
         <div class="title-about__undername">
-          {{ item.nameEn }}, {{ item.year }}, {{ item.filmLength }}
+          {{ item.nameEn || '' }} {{ item.year }} {{ item.filmLength }}
         </div>
         <div class="title-about__subinfo">
           {{ item.countries[0].country }}
@@ -25,7 +25,6 @@
             <div class="score">{{ item.rating }}</div>
             <div class="user-count">{{ item.ratingVoteCount }}</div>
           </div>
-          <div class="top-rating">Топ 250: {{ id + 1 }}</div>
         </div>
         <div class="title-about__button">
           <div class="bookmarks" v-if="!status" @click="status = true">Буду смотреть

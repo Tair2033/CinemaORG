@@ -246,17 +246,14 @@ export default {
   border: none;
   font-weight: 600;
   font-size: calc(14px + 1vw);
+  transition: all 0.4s;
 }
 
+.logo:hover {
+  color: rgb(255, 172, 19);
+}
 
-.logo__image {
-  cursor: pointer;
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 100%;
-  object-fit: contain;
-  margin: 17px 0;
-  border: none;
+.logo:focus {
+  color: rgb(255, 255, 255);
 }
 </style>

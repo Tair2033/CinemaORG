@@ -12,18 +12,14 @@ export default new Vuex.Store({
     },
     loading: {
       films: true,
-      filmList: false,
       titlePage: true,
-      top: true,
-      popular: true,
-      awaiting: true,
+      topPage: false,
       popupSearch: true,
-      MoviesPage: false
+      MoviesPage: false,
+      actorPage: false
     },
-    Top250PageCount: 1,
-    popularPageCount: 1,
-    awaitingPageCount: 1,
     filmsPageCount: 1,
+    topPageCount: 1,
     pageCounter: 1,
     searchPage: 1
   },

@@ -78,10 +78,10 @@
                 <div class="title-center__actors">
                   <span> В главных ролях </span>
                   <ul v-for="(actor, id) in actors" :key="id">
-                    <li v-show="actor.professionKey ==
-                      'ACTOR' && id < 15
-                      " class="actor">
-                      {{ actor.nameRu }}
+                    <li class="actor">
+                      <router-link :to="'/name/' + actor.staffId">
+                        {{ actor.nameRu }}
+                      </router-link>
                     </li>
                   </ul>
                 </div>
@@ -92,7 +92,7 @@
 
         <div class="title-bottom">
           <ul class="title-bottom__menu">
-            <li :style="menuStatus[id] == 'true' ? activeStyle : null
+            <li :style="id == selectedMenuItemId ? activeStyle : null
               " v-for="(section, id) in sections" :key="id" @click="menuAction(id)">
               {{ section }}
             </li>
@@ -156,7 +156,7 @@ export default {
   data () {
     return {
       key,
-      menuStatus: ["true", "false", "false"],
+      selectedMenuItemId: 0,
       activeStyle: {
         "font-weight": 500,
         "border-bottom": "1px solid orange",
@@ -179,7 +179,6 @@ export default {
       sections: ["Обзор", "Изображения"],
     };
   },
-  props: [""],
   methods: {
     async getReviews (id) {
       const url = `https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}/reviews?page=1&order=DATE_DESC`;
@@ -242,7 +241,21 @@ export default {
       })
         .then((res) => res.json())
         .then((json) => {
-          this.actors.push(...json);
+
+          let actorCounter = 0;
+
+          json.every((staff) => {
+            if (actorCounter > 10) {
+              return false;
+            }
+
+            if (staff.professionKey === "ACTOR") {
+              actorCounter++;
+              this.actors.push(staff);
+            }
+
+            return true;
+          });
 
           this.$store.state.loading.titlePage = false;
         })
@@ -262,12 +275,7 @@ export default {
       }
     },
     menuAction (id) {
-      this.menuStatus[0] = "false";
-      this.menuStatus[1] = "false";
-      this.menuStatus[2] = "false";
-      this.menuStatus[id] = "true";
-
-      this.$forceUpdate();
+      this.selectedMenuItemId = id;
     },
   },
   computed: {
@@ -300,7 +308,7 @@ export default {
     this.getTitle(this.$route.params.id);
     this.getReviews(this.$route.params.id);
   },
-  beforeUpdate () {
+  beforeMounted () {
     window.scrollTo({
       top: 0
     })
@@ -376,6 +384,10 @@ export default {
   margin: 0 auto;
 }
 
+.title-left {
+  height: 100%;
+}
+
 .title-center__originalname {
   display: inline-flex;
   align-items: center;
@@ -392,9 +404,8 @@ export default {
 }
 
 .title-left__poster {
-  min-width: 200px;
   height: 400px;
-  max-width: 300px;
+  width: 300px;
   border-radius: 4px;
 }
 
@@ -570,10 +581,17 @@ export default {
   list-style: none;
   font-size: 15px;
   font-weight: lighter;
-  margin: 3px 0;
+  margin: 5px 0;
 }
 
-.actor:hover {
+.actor a {
+  text-decoration: none;
+  color: #1f1f1f;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.actor a:hover {
   color: orange;
 }
 
@@ -698,6 +716,21 @@ export default {
 }
 
 @media (max-width: 680px) {
+  .title-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .title-center {
+    margin-top: 60px;
+    margin-left: 0;
+  }
+
+  .title-center__item {
+    width: auto;
+  }
+
   .title-bottom__rating {
     flex-direction: column;
   }
@@ -714,6 +747,11 @@ export default {
     padding: 7px 14px;
     display: flex;
     align-items: center;
+  }
+
+  .title-center__top {
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
 </style>

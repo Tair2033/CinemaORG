@@ -95,11 +95,11 @@ export default {
       }
 
       if (rating <= 7.0 && rating > 4.0) {
-        return "grey"
+        return "rgba(190, 190, 190, 0.743)"
       }
 
       if (rating <= 4.0) {
-        return "red"
+        return "rgba(247, 81, 81, 0.743)"
       }
     }
   },
@@ -180,7 +180,7 @@ export default {
     font-weight: 600;
     word-break: keep-all;
     font-size: calc(1.1vw);
-    // color: rgba(121, 233, 9, 0.598);
+    // color: rgba(190, 190, 190, 0.743);
     text-align: center;
     margin-top: 4px;
   }
@@ -242,8 +242,10 @@ export default {
   }
 
   .cinema__wrapper {
-    width: 100vw;
+    width: 92vw;
     min-height: 160px;
+    border: 1px solid rgb(228, 228, 228);
+    margin-bottom: 10px;
   }
 
   .cinema__image-inside {

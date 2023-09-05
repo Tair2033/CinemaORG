@@ -2,7 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import HomePage from '../views/HomePage.vue';
 import MoviesPage from '../views/MoviesPage.vue';
-import Filmtop from '../views/FilmTop.vue';
+import TopPage from '../views/TopPage.vue';
 import CinemaPage from '../views/CinemaPage.vue';
 import ActorPage from '../views/ActorPage.vue';
 
@@ -21,8 +21,8 @@ const routes = [
   },
   {
     path: '/movies/:name',
-    name: 'Filmtop',
-    component: Filmtop,
+    name: 'TopPage',
+    component: TopPage,
     params: {
       name: ':name'
     }
@@ -50,6 +50,12 @@ const router = new VueRouter({
   linkExactActiveClass: 'active',
   base: process.env.BASE_URL,
   routes
+});
+
+router.afterEach(() => {
+  window.scrollTo({
+    top: 0
+  });
 });
 
 export default router;
