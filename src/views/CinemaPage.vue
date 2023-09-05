@@ -98,11 +98,11 @@
             </li>
           </ul>
 
-          <div class="title-bottom__description">
+          <div class="title-bottom__description" v-if="selectedMenuItemId !== 1">
             {{ currentPageData.description }}
           </div>
 
-          <div class="title-bottom__ratingsection">
+          <div class="title-bottom__ratingsection" v-if="selectedMenuItemId !== 1">
             <div class="title-raiting">
               <span>Рейтинг фильма</span>
               <div :style="{ color: ratingColor }" class="title-bottom__ratingKinopoisk">
@@ -134,6 +134,14 @@
                 </div>
               </div>
               <div class="write-btn">Написать рецензию</div>
+            </div>
+          </div>
+
+          <div v-if="selectedMenuItemId !== 0" class="images">
+            <div class="images__image-wrapper" v-for="(image, id) in images" :key="id">
+              <div class="images__image-image">
+                <img :src="image.previewUrl" alt="">
+              </div>
             </div>
           </div>
 
@@ -175,11 +183,37 @@ export default {
       about: {},
       reviews: {},
       actors: [],
+      images: [],
       ratingColor: "",
       sections: ["Обзор", "Изображения"],
     };
   },
   methods: {
+    async getImages (id) {
+      const url = `https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}/images?page=1`;
+
+      await fetch(url, {
+        method: "GET",
+        headers: {
+          "X-API-KEY": key,
+          "Content-Type": "application/json",
+        },
+      })
+        .then((res) => res.json())
+        .then((json) => {
+
+          json.items.every((image, id) => {
+            if (id < 6) {
+              this.images.push(image);
+              return true;
+            }
+
+            return false;
+          })
+
+        })
+        .catch((err) => console.log(err));
+    },
     async getReviews (id) {
       const url = `https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}/reviews?page=1&order=DATE_DESC`;
 
@@ -276,6 +310,8 @@ export default {
     },
     menuAction (id) {
       this.selectedMenuItemId = id;
+
+      this.getImages(this.$route.params.id)
     },
   },
   computed: {
@@ -331,6 +367,19 @@ export default {
   width: 40vw;
   margin-bottom: 10px;
 }
+
+.images {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  &__image-wrapper {
+    margin: 5px;
+  }
+
+  &__image-image {}
+}
+
 
 .scores {
   display: flex;
@@ -441,6 +490,7 @@ export default {
   font-size: calc(10px + 3vw);
   font-weight: 700;
   line-height: 48px;
+  margin-left: 20px;
 }
 
 .title-center__line {
@@ -506,6 +556,9 @@ export default {
 
 .title-bottom__reviews {
   margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .point {

@@ -48,7 +48,7 @@
       <div class="popup__section user__section">
         <div class="popup__list">
           <div v-for="(item, id) in  userItems" :key="id">
-            <div class="user__item">
+            <div class="user__item" @click.prevent="login(item)">
               {{ item }}
             </div>
           </div>
@@ -74,9 +74,16 @@ export default {
   },
   props: ["data", "type"],
   methods: {
+    login (item) {
+      if (item === "Выход") {
+        this.$store.state.isAuth = false;
+      }
+
+      return;
+    },
     hideFinded () {
-      this.$store.state.popup.search = true;
-      location.reload()
+      location.reload();
+      this.$store.state.popup.search = false
     },
     ratingColorChanger (rating) {
       if (rating >= 7.0) {

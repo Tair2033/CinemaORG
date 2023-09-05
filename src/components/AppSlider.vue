@@ -50,7 +50,7 @@ export default {
 <style scoped>
 .slider__wrapper {
   position: relative;
-  width: 1087px;
+  width: 90vw;
 }
 
 .slider__main {

@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="'/film/' + item.filmId" class="title-item">
+  <div @click="goToPage" class="title-item">
     <div class="title-counter" v-if="currentPage == 1">{{ id + 1 }}</div>
     <div class="title-counter" v-if="currentPage > 1">{{ (id + 1) + (10 * currentPage) }}</div>
 
@@ -35,7 +35,7 @@
         </div>
       </div>
     </div>
-  </router-link>
+  </div>
 </template>
 
 <script>
@@ -48,10 +48,17 @@ export default {
       ].join(", ")
     }
   },
+  methods: {
+    goToPage (e) {
+      console.log(e);
+      if (!e.target.classList.contains('watching')) {
+        this.$router.push('/film/' + this.item.filmId)
+      }
+    }
+  },
   props: ['item', 'id', 'currentPage'],
-  mounted () {
-  }
 }
+
 </script>
 
 <style scoped>

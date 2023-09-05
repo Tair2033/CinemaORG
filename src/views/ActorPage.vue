@@ -108,7 +108,7 @@ export default {
       })
         .then((res) => res.json())
         .then((json) => {
-          let films = []
+          let films = [];
 
           json.films.every((film, id) => {
             if (id >= 10) {
@@ -128,11 +128,13 @@ export default {
             films: [...films]
           };
 
+          let birth = json.birthday.split('-').reverse().join('-')
+
           this.points = {
             "Пол": this.getSex(json.sex),
             "Карьера": json.profession,
-            "Рост": json.growth,
-            "Дата рождения": json.birthday,
+            "Рост": json.growth + " см.",
+            "Дата рождения": birth,
             "Возраст": json.age,
             "Место рождения": json.birthplace,
           };

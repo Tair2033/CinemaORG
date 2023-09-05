@@ -177,6 +177,8 @@ export default {
           break;
       }
 
+      this.filterChanged = true;
+
       this.getContent(this.$store.state.pageCounter);
     },
     changeContentType () {
@@ -227,7 +229,6 @@ export default {
           this.content = [...json.items]
           store.dispatch('toggleMoviesPageStatus')
 
-          this.filterChanged = true;
         })
         .catch((err) => console.log(err));
     }

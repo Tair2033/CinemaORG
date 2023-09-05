@@ -39,10 +39,10 @@ export default {
 .authed {
   z-index: 2;
   display: flex;
-  align-items: center;
-  width: 20vw;
+  flex-direction: row;
   justify-content: center;
   position: relative;
+  margin-right: 70px;
 }
 
 .authed-button {
@@ -52,8 +52,8 @@ export default {
   align-items: center;
   user-select: none;
   cursor: pointer;
-  width: 50px;
-  height: 50px;
+  width: 59px;
+  height: 59px;
   border: 2px solid rgb(50, 177, 71);
   border-radius: 50%;
 }
@@ -63,5 +63,11 @@ export default {
   height: 100%;
   object-fit: cover;
   opacity: 1;
+}
+
+@media (max-width: 850px) {
+  .authed {
+    margin-right: 70px;
+  }
 }
 </style>

@@ -9,8 +9,8 @@
       </div>
 
       <div class="review__main">
-        <div class="review__description">
-          {{ data.description }}
+        <div class="review__description" ref="description">
+          <div class="review__all">Открыть весь отзыв</div>
         </div>
       </div>
 
@@ -37,6 +37,11 @@
 
 export default {
   name: "Review",
+  data () {
+    return {
+      isFull: false
+    }
+  },
   props: ["data"],
   computed: {
     isType () {
@@ -50,6 +55,9 @@ export default {
 
       return "rgb(215, 218, 215)"
     }
+  },
+  mounted () {
+    this.$refs.description.innerHTML = this.data.description
   }
 };
 </script>

@@ -186,6 +186,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.home {
+  height: 100vh;
+  padding-top: 100px;
+  margin: 0 20px;
+}
+
 .main {
   &__section {
     overflow: hidden;
@@ -226,6 +232,7 @@ export default {
   &__about-logo {
     margin-left: 40px;
     width: calc(20px + 18vw);
+    max-width: 230px;
   }
 
   &__about-logo img {
@@ -292,13 +299,13 @@ export default {
 }
 
 .content__bad {
-  background-color: rgba(192, 193, 193, 0.743);
+  background: linear-gradient(0deg, rgba(55, 111, 36, 1) 52%, rgba(136, 206, 63, 1) 86%);
   color: black;
   padding: 20px 60px;
 }
 
 .content__bad:hover {
-  background-color: rgba(216, 218, 218, 0.743);
+  background: linear-gradient(0deg, rgba(55, 111, 36, 0.864) 52%, rgba(137, 206, 63, 0.792) 86%);
 }
 
 .content__info {
@@ -338,12 +345,6 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
-}
-
-.home {
-  height: 100vh;
-  padding-top: 100px;
-  margin: 0 20px;
 }
 
 
@@ -406,10 +407,35 @@ export default {
     &__image {
       min-height: 340px;
     }
+  }
+}
 
-    &__image img {}
+@media (max-width: 540px) {
+  .content__info {
+    padding: 14px;
+  }
+}
 
-    &__about {}
+@media (max-width: 440px) {
+  .main__image {
+    min-height: 200px;
+  }
+
+  .main__about {
+    width: 70%;
+  }
+
+  .main__about-description {
+    display: none;
+  }
+
+  .main__about-button {
+    margin-top: 15px;
+  }
+
+  .main__about-logo {
+    margin-left: 5px;
+    width: calc(29px + 18vw)
   }
 }
 </style>

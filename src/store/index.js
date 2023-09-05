@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     isAuth: true,
+    isBurger: false,
     popup: {
       search: false,
       user: false

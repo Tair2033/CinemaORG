@@ -39,6 +39,12 @@
         <div @click="login" class="entrance" v-if="!$store.state.isAuth">
           Войти
         </div>
+
+        <div class="burger-wrapper">
+          <div class="burger">
+            &#9776;
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -57,10 +63,10 @@ export default {
     return {
       key,
       user: {
-        ico: "https://animemotivation.com/wp-content/uploads/2023/03/makima-chainsaw-man-wallpaper-sinister.jpg"
+        ico: "https://s0.rbk.ru/v6_top_pics/resized/590xH/media/img/7/45/756778283361457.jpg"
       },
       searchInputValue: '',
-      inputPlaceholder: "Фильмы, сериалы, персоны",
+      inputPlaceholder: "Фильмы, сериалы",
       searchItems: []
     };
   },
@@ -68,9 +74,12 @@ export default {
     login () {
       store.dispatch('login');
     },
-    hideSearchField () {
+    hideSearchField (e) {
       this.searchInputValue = ""
-      // this.$store.state.popup.search = false
+
+      if (e.relatedTarget === null) {
+        this.$store.state.popup.search = false
+      }
     },
     getInputVal () {
       if (this.searchInputValue.length > 0) {
@@ -124,7 +133,24 @@ export default {
   color: white;
   transition: all 0.4s;
   padding: 5px;
-  margin-left: 50px;
+  margin-right: 70px;
+}
+
+.burger-wrapper {
+  cursor: pointer;
+  position: absolute;
+  right: 25px;
+  display: none;
+}
+
+.burger {
+  color: white;
+  font-size: 40px;
+  transition: all 0.4s;
+}
+
+.burger:hover {
+  color: rgb(250, 170, 9);
 }
 
 .entrance:hover {
@@ -141,17 +167,15 @@ export default {
   position: fixed;
   background-color: black;
   width: 100vw;
-  min-height: 72px;
-  padding: 0 20px;
   z-index: 30;
-  display: flex;
-  align-items: center;
 }
 
 .havbar__inside {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
+  height: 75px;
 }
 
 .search {
@@ -163,6 +187,7 @@ export default {
   display: flex;
   align-items: center;
   position: relative;
+  transition: all 0.4s;
 }
 
 .search__form-input {
@@ -206,7 +231,6 @@ export default {
   height: 100%;
 }
 
-
 .menu {
   display: flex;
   justify-content: center;
@@ -247,6 +271,7 @@ export default {
   font-weight: 600;
   font-size: calc(14px + 1vw);
   transition: all 0.4s;
+  margin-left: 15px;
 }
 
 .logo:hover {
@@ -255,5 +280,33 @@ export default {
 
 .logo:focus {
   color: rgb(255, 255, 255);
+}
+
+@media (max-width: 1000px) {
+  .search {
+    min-width: 260px;
+  }
+
+  .logo {
+    margin-right: 50px;
+  }
+
+  .authed {
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 850px) {
+  .search {
+    display: none;
+  }
+
+  .menu {
+    display: none;
+  }
+
+  .burger-wrapper {
+    display: block;
+  }
 }
 </style>
