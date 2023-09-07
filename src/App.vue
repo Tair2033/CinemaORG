@@ -26,6 +26,7 @@ export default {
 body {
   font-family: 'Nunito', sans-serif;
   overflow-x: hidden;
+  background-color: rgb(13, 13, 13);
 }
 
 .container {

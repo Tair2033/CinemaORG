@@ -20,7 +20,7 @@
 
           <div v-if="data.length > 0">
             <div class="popup__list" v-for="(item, id) in  data" :key="id" @click="hideFinded">
-              <router-link class="popup__item" :to="'/film/' + item.filmId">
+              <router-link v-if="item.filmId !== null" class="popup__item" :to="'/film/' + item.filmId">
                 <div class="popup__item-img">
                   <img loading="lazy" :src="item.posterUrlPreview" alt="" />
                 </div>
@@ -47,6 +47,9 @@
     <div class="user__wrapper" v-if="type === 'USER'">
       <div class="popup__section user__section">
         <div class="popup__list">
+          <div class="user__username">
+            @Username
+          </div>
           <div v-for="(item, id) in  userItems" :key="id">
             <div class="user__item" @click.prevent="login(item)">
               {{ item }}
@@ -138,8 +141,8 @@ export default {
 }
 
 .user__wrapper {
-  top: 36px;
-  left: -100px;
+  top: 60px;
+  left: -110px;
   min-width: 160px;
   position: absolute;
   background-color: rgb(255, 255, 255);
@@ -147,6 +150,21 @@ export default {
   overflow: auto;
   box-shadow: -1px -0px 37px 0px rgba(21, 32, 41, 0.497);
   border-radius: 10px;
+}
+
+.user__username {
+  font-weight: 700;
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.478);
+  padding-bottom: 5px;
+  padding-top: 5px;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+
+.user__username:hover {
+  color: rgba(223, 79, 7, 0.558);
 }
 
 .popup__list {
@@ -170,6 +188,7 @@ export default {
 }
 
 .user__item {
+  width: 100%;
   justify-content: center;
   padding: 10px;
   display: flex;

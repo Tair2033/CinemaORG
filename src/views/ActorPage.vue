@@ -198,7 +198,7 @@ export default {
 }
 
 .title-center__center {
-  margin-top: 20px;
+  margin-top: 40px;
   display: flex;
   justify-content: space-between;
 }
@@ -219,7 +219,7 @@ export default {
 
 .title__films-film a {
   word-wrap: break-word;
-  color: #272727;
+  color: rgba(201, 200, 200, 0.889);
   text-decoration: none;
   font-size: 15px;
   transition: all 0.2s;
@@ -238,12 +238,12 @@ export default {
 }
 
 .title-left__poster img {
-  border: 1px solid rgb(229, 226, 226);
+  border: 1px solid rgb(67, 67, 67);
   width: 100%;
   height: auto;
   object-fit: cover;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 10px;
 }
 
 .facts {
@@ -251,13 +251,13 @@ export default {
   &__wrapper {
     margin-top: 80px;
     margin-bottom: 40px;
-    border: 1px solid rgb(176, 174, 174);
+    border: 1px solid rgb(95, 94, 94);
     padding: 15px 20px;
     border-radius: 10px;
   }
 
   &__title {
-    color: #1f1f1f;
+    color: rgba(251, 249, 249, 0.889);
     font-size: 24px;
     line-height: 30px;
     font-weight: 700;
@@ -265,13 +265,13 @@ export default {
 
   &__fact {
     margin: 10px 0;
-    color: #333;
+    color: rgba(201, 200, 200, 0.889);
     font-weight: 500;
   }
 }
 
 .title__text {
-  color: #1f1f1f;
+  color: rgba(251, 249, 249, 0.889);
   font-size: 24px;
   line-height: 30px;
   font-weight: 700;
@@ -304,7 +304,7 @@ export default {
 
 .title-center__originalname {
   white-space: normal;
-  font-size: 35px;
+  font-size: 32px;
   font-weight: 700;
   line-height: 30px;
   color: #757474;
@@ -320,22 +320,13 @@ export default {
   line-height: 48px;
 }
 
-.title-center__line:after {
-  content: "Недостаточно оценок, \A рейтинг формируется";
-  white-space: pre;
-  color: rgba(0, 0, 0, 0.4);
-  font-size: 13px;
-  line-height: normal;
-  margin-left: 15px;
-}
-
 .title-center__info {
   display: flex;
   flex-direction: column;
 }
 
 .title-center__heading {
-  color: #1f1f1f;
+  color: rgba(251, 249, 249, 0.889);
   font-size: 24px;
   line-height: 30px;
   font-weight: 700;
@@ -348,7 +339,7 @@ export default {
 }
 
 .point {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(251, 249, 249, 0.889);
   font-size: 15px;
   min-width: 150px;
   line-height: 18px;
@@ -357,7 +348,7 @@ export default {
 
 .value {
   padding: 8px 0;
-  color: #333;
+  color: rgba(139, 138, 138, 0.889);
   font-size: 13px;
   line-height: 18px;
 }

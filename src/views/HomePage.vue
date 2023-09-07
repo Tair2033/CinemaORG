@@ -211,6 +211,7 @@ export default {
 
   &__image img {
     width: 100%;
+    border-radius: 10px;
     height: auto;
     object-fit: cover;
   }
@@ -242,7 +243,7 @@ export default {
   }
 
   &__about-description {
-    font-size: calc(10px + 0.4 * 1vw);
+    font-size: calc(10px + 0.4 * 0.8vw);
     padding-right: 100px;
     line-height: 1.4;
   }

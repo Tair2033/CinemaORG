@@ -71,10 +71,11 @@ export default {
   transition-property: box-shadow;
   transition-duration: 0.3s;
   text-decoration: none;
+  background-color: #2222225b;
 }
 
 .title-item:hover {
-  box-shadow: -1px 3px 22px 11px rgba(34, 60, 80, 0.17);
+  box-shadow: -1px 3px 22px 11px rgba(62, 62, 62, 0.449);
 }
 
 .title-image {
@@ -111,11 +112,11 @@ export default {
   padding-bottom: 4px;
   font-size: 13px;
   font-weight: 300;
-  color: #222222;
+  color: #8e8c8c;
 }
 
 .title-about__name {
-  color: #000;
+  color: #cecece;
   font-weight: 500;
   font-size: 18px;
 }
@@ -123,7 +124,7 @@ export default {
 .title-about__subinfo {
   font-size: 13px;
   line-height: 16px;
-  color: #777;
+  color: #8a8a8a;
 }
 
 .watching {
@@ -186,7 +187,8 @@ export default {
   font-size: 16px;
   font-weight: 500;
   line-height: 20px;
-  color: #000;
+  color: #cecece;
+  align-self: center;
 }
 
 .score {

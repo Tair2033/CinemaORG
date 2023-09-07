@@ -28,12 +28,12 @@ export default {
   props: ["data"],
   methods: {
     leftAction () {
-      this.leftPos -= this.step
-      this.$refs.slider.style.right = this.leftPos + 'px'
+      this.leftPos += this.step
+      this.$refs.slider.style.transform = `translateX(${this.leftPos}px)`
     },
     rightAction () {
-      this.leftPos += this.step
-      this.$refs.slider.style.right = this.leftPos + 'px'
+      this.leftPos -= this.step
+      this.$refs.slider.style.transform = `translateX(${this.leftPos}px)`
     },
   },
   computed: {

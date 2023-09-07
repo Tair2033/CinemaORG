@@ -41,8 +41,9 @@ export default {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  position: relative;
+  position: absolute;
   margin-right: 70px;
+  right: 0;
 }
 
 .authed-button {

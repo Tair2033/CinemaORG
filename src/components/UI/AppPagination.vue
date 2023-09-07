@@ -22,7 +22,7 @@ export default {
   data () {
     return {
       activeStyle: {
-        backgroundColor: '#222222',
+        backgroundColor: '#3f3f3fa7',
         color: 'white'
       }
     }
@@ -87,10 +87,20 @@ export default {
   font-size: 28px;
   margin-left: 20px;
   cursor: pointer;
+  color: white;
+  background-color: #3f3f3f6f;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.4s;
 }
 
 .arrow:hover {
   color: orange;
+  background-color: #3f3f3fa7;
 }
 
 .pagination-wrapper {
@@ -105,6 +115,7 @@ export default {
 }
 
 .pagination-item {
+  transition: all 0.4s;
   margin-left: 10px;
   cursor: pointer;
   width: 30px;
@@ -113,11 +124,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
+  background-color: #4c4c4c1d;
 }
 
 .pagination-item:hover {
-  background-color: #222222;
-  color: white;
+  background-color: #6e6d6d;
+  color: orange;
 }
 
 .pagination-item:first-child {

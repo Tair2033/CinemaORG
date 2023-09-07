@@ -19,43 +19,50 @@
 
             <div class="filter__inputs">
 
-              <div class="filter__value">
-                <div class="filter__text">от</div>
-                <input type="number" @change="changeFilterStatus" v-model="filterItems.minRating">
+              <div class="filter__values">
+                <div class="filter__value">
+                  <div class="filter__text">от</div>
+                  <input type="number" @change="changeFilterStatus" v-model="filterItems.minRating">
+                </div>
+                <div class="filter__value">
+                  <div class="filter__text">до</div>
+                  <input type="number" @input="changeFilterStatus" v-model="filterItems.maxRating">
+                </div>
               </div>
 
-              <input type="range" @change="changeFilterStatus" v-model="filterItems.minRating" max="9" min="0"
-                class="filter__input">
+              <div class="filter__double">
+                <input type="range" @change="changeFilterStatus" v-model="filterItems.minRating" max="9" min="0"
+                  class="filter__input">
 
-              <div class="filter__value">
-                <div class="filter__text">до</div>
-                <input type="number" @input="changeFilterStatus" v-model="filterItems.maxRating">
+                <input type="range" @change="changeFilterStatus" max="10" min="1" v-model="filterItems.maxRating"
+                  class="filter__input">
               </div>
-
-              <input type="range" @change="changeFilterStatus" max="10" min="1" v-model="filterItems.maxRating"
-                class="filter__input">
             </div>
           </div>
+
           <div class="movies__filters-item filter">
             <label>По году</label>
 
             <div class="filter__inputs">
 
-              <div class="filter__value">
-                <div class="filter__text">от</div>
-                <input type="number" @input="changeFilterStatus" v-model="filterItems.minYear">
+              <div class="filter__values">
+                <div class="filter__value">
+                  <div class="filter__text">от</div>
+                  <input type="number" @input="changeFilterStatus" v-model="filterItems.minYear">
+                </div>
+                <div class="filter__value">
+                  <div class="filter__text">до</div>
+                  <input type="number" @change="changeFilterStatus" v-model="filterItems.maxYear">
+                </div>
               </div>
 
-              <input type="range" @change="changeFilterStatus" :max="new Date().getFullYear()" min="1900"
-                v-model="filterItems.minYear" class="filter__input">
+              <div class="filter__double">
+                <input type="range" @change="changeFilterStatus" :max="new Date().getFullYear()" min="1900"
+                  v-model="filterItems.minYear" class="filter__input input-left">
 
-              <div class="filter__value">
-                <div class="filter__text">до</div>
-                <input type="number" @change="changeFilterStatus" v-model="filterItems.maxYear">
+                <input type="range" @change="changeFilterStatus" :max="new Date().getFullYear() + 5" min="2000"
+                  v-model="filterItems.maxYear" class="filter__input input-right">
               </div>
-
-              <input type="range" @change="changeFilterStatus" :max="new Date().getFullYear() + 5" min="2000"
-                v-model="filterItems.maxYear" class="filter__input">
             </div>
           </div>
           <div class="movies__filters-item">
@@ -255,7 +262,7 @@ export default {
     height: 100%;
     min-height: 100vh;
     padding-bottom: 50px;
-    border-bottom: 1px solid rgb(217, 216, 216);
+    border-bottom: 1px solid rgba(188, 179, 174, 0.305);
   }
 
   &__content {
@@ -266,6 +273,7 @@ export default {
   }
 
   &__filters {
+    color: white;
     z-index: 20;
     position: fixed;
     padding-top: 120px;
@@ -273,8 +281,8 @@ export default {
     min-width: 200px;
     height: 100%;
     padding: 100px 25px 0 25px;
-    border-right: 1px solid rgb(217, 216, 216);
-    background-color: rgb(241, 239, 239);
+    border-right: 1px solid rgba(188, 179, 174, 0.305);
+    background-color: rgb(0, 0, 0);
   }
 
   &__empty {
@@ -287,6 +295,7 @@ export default {
   &__empty span {
     display: block;
     text-align: center;
+    color: white;
   }
 
   &__form {
@@ -296,8 +305,6 @@ export default {
     justify-content: center;
     align-items: center;
   }
-
-  &__form-type {}
 
   &__form-type label {
     font-weight: 600;
@@ -309,11 +316,14 @@ export default {
     min-width: 120px;
     padding: 3px;
     font-size: 16px;
+    background: rgb(9, 9, 9);
+    color: white;
   }
 
   &__filters-item {
     text-align: start;
     display: flex;
+    align-items: center;
     flex-direction: column;
     margin-bottom: 10px;
   }
@@ -365,15 +375,15 @@ export default {
     padding: 3px 5px;
     font-size: 24px;
     border-radius: 5px;
-    border: none;
+    border: 1px solid rgb(70, 70, 70);
     cursor: pointer;
-    color: black;
-    background-color: rgb(217, 216, 216);
+    color: rgb(245, 245, 245);
+    background-color: rgb(4, 4, 4);
     transition: all 0.4s;
   }
 
   &__search button:hover {
-    background-color: rgb(9, 9, 49);
+    background-color: rgb(60, 60, 60);
     color: white;
   }
 
@@ -387,10 +397,12 @@ export default {
     font-size: 24px;
     margin-right: 10px;
     padding-left: 10px;
+    color: white;
+    background: #000000;
   }
 
   &__search input::placeholder {
-    color: rgb(199, 200, 201);
+    color: rgb(114, 113, 113);
   }
 }
 
@@ -403,13 +415,38 @@ input::-webkit-inner-spin-button {
   /* <-- Apparently some margin are still there even though it's hidden */
 }
 
+label {
+  text-align: left;
+  width: 100%;
+  margin-left: 23px;
+  color: white;
+}
 
 .filter {
+
+
+  &__double {
+    position: relative;
+    flex-grow: 1;
+  }
+
   &__inputs {
     display: flex;
     justify-content: center;
     flex-direction: column;
     margin-top: 10px;
+  }
+
+  &__values {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  select {
+    background: rgb(9, 9, 9);
+    color: white;
   }
 
   &__input {
@@ -426,7 +463,7 @@ input::-webkit-inner-spin-button {
   }
 
   &__text {
-    margin: 0 10px;
+    margin: 0 5px;
   }
 
   &__value {
@@ -444,9 +481,10 @@ input::-webkit-inner-spin-button {
   }
 
   &__success {
+    min-width: 110px;
     cursor: pointer;
     color: black;
-    margin: 10px 40px;
+    margin: 26px 40px;
     padding: 15px 10px;
     border-radius: 10px;
     font-weight: 700;
@@ -459,13 +497,13 @@ input::-webkit-inner-spin-button {
 
   &__success:hover {
     color: rgb(34, 33, 33);
-    background-color: rgb(255, 124, 2);
-    box-shadow: 0px 0px 44px 20px rgba(251, 180, 0, 0.721);
+    background-color: rgb(255, 147, 6);
+    box-shadow: 0px 0px 44px 20px rgba(251, 180, 0, 0.592);
   }
 
   &__success:disabled {
-    background-color: white;
-    color: rgb(15, 14, 14);
+    background-color: rgb(24, 24, 24);
+    color: rgb(159, 159, 159);
     font-weight: 700;
     border: 1px solid rgb(211, 211, 211);
     box-shadow: 0px 0px 44px 37px rgba(251, 180, 0, 0);
@@ -486,6 +524,7 @@ input::-webkit-inner-spin-button {
 .movies-titles {
   font-size: 29px;
   margin-top: 36px;
+  color: white;
 }
 
 .movies__categories {
@@ -500,6 +539,10 @@ input::-webkit-inner-spin-button {
   align-items: center;
 }
 
+input[type=number] {
+  background: black;
+  color: white;
+}
 
 
 input[type=range] {

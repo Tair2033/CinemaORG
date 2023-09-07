@@ -114,11 +114,17 @@ export default {
   filter: brightness(85%);
   border-radius: 5px;
   min-height: 300px;
+  background-color: rgba(38, 38, 38, 0.752);
+  margin-bottom: 15px;
 }
 
 .cinema__wrapper:hover {
   background-color: rgb(178, 179, 179);
   filter: brightness(110%);
+
+  .cinema__title {
+    color: black;
+  }
 }
 
 .cinema {
@@ -180,9 +186,10 @@ export default {
     font-weight: 600;
     word-break: keep-all;
     font-size: calc(1.1vw);
-    // color: rgba(190, 190, 190, 0.743);
+    color: rgba(226, 223, 223, 0.927);
     text-align: center;
     margin-top: 4px;
+    transition: all 0.4s;
   }
 }
 

@@ -17,7 +17,7 @@
                 <div class="title-center__name">
                   {{ currentPageData.nameRu }}
                 </div>
-                <div class="title-center__originalname">
+                <div class="title-center__originalname" :style="{ fontSize: isOriginalName }">
                   {{ currentPageData.nameOriginal || "" }}
                   <div class="min-age">
                     {{ getMinAge }}
@@ -40,10 +40,10 @@
 
             <div class="title-center__center">
               <div class="title-center__buttons">
-                <div class="title-center__tickets">
+                <div class="title-center__tickets" v-if="!currentPageData.serial">
                   Расписание и билеты
                 </div>
-                <div class="title-center__status">
+                <div class="title-center__status" v-if="!currentPageData.serial">
                   <span>
                     ...
                   </span>
@@ -57,7 +57,7 @@
               <div class="title-center__info">
                 <div class="title-center__infoblock">
                   <div class="title-center__points">
-                    <div class="title-center__item" v-for="(point, id) in points" :key="id">
+                    <div class="title-center__item" v-for="( point, id ) in  points " :key="id">
                       <div class="point">
                         {{ id }}
                       </div>
@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="title-center__values">
-                      <div v-for="(val, id) in about" :key="id" class="value">
+                      <div v-for="( val, id ) in  about " :key="id" class="value">
                         {{ val || "-" }}
                       </div>
                     </div>
@@ -77,7 +77,7 @@
 
                 <div class="title-center__actors">
                   <span> В главных ролях </span>
-                  <ul v-for="(actor, id) in actors" :key="id">
+                  <ul v-for="( actor, id ) in  actors " :key="id">
                     <li class="actor">
                       <router-link :to="'/name/' + actor.staffId">
                         {{ actor.nameRu }}
@@ -93,7 +93,7 @@
         <div class="title-bottom">
           <ul class="title-bottom__menu">
             <li :style="id == selectedMenuItemId ? activeStyle : null
-              " v-for="(section, id) in sections" :key="id" @click="menuAction(id)">
+              " v-for="( section, id ) in  sections " :key="id" @click="menuAction(id)">
               {{ section }}
             </li>
           </ul>
@@ -138,7 +138,7 @@
           </div>
 
           <div v-if="selectedMenuItemId !== 0" class="images">
-            <div class="images__image-wrapper" v-for="(image, id) in images" :key="id">
+            <div class="images__image-wrapper" v-for="( image, id ) in  images " :key="id">
               <div class="images__image-image">
                 <img :src="image.previewUrl" alt="">
               </div>
@@ -146,7 +146,7 @@
           </div>
 
           <div class="title-bottom__reviews">
-            <app-review v-for="(review, id) in reviews.items" :data="review" :key="id"></app-review>
+            <app-review v-for="( review, id ) in  reviews.items " :data="review" :key="id"></app-review>
           </div>
         </div>
       </div>
@@ -315,6 +315,13 @@ export default {
     },
   },
   computed: {
+    isOriginalName () {
+      if (this.currentPageData.nameRu == null) {
+        return "30px"
+      }
+
+      return null
+    },
     getMinAge () {
       const count = this.currentPageData.ratingAgeLimits;
 
@@ -368,6 +375,10 @@ export default {
   margin-bottom: 10px;
 }
 
+.title-center__name {
+  color: rgba(251, 249, 249, 0.889);
+}
+
 .images {
   display: flex;
   flex-wrap: wrap;
@@ -383,15 +394,27 @@ export default {
 
 .scores {
   display: flex;
+  color: rgba(251, 249, 249, 0.889);
 
   &__positive {
+    background-color: #3c3c3c53;
     color: green;
   }
 
-  &__neutral {}
+  &__neutral {
+    color: rgb(166, 166, 166);
+    background-color: #3c3c3c53;
+  }
 
   &__negative {
     color: red;
+    background-color: #3c3c3c53;
+  }
+
+  &__title {
+    color: rgba(251, 249, 249, 0.889);
+    font-size: calc(1.2vw);
+    font-weight: 600;
   }
 }
 
@@ -405,16 +428,11 @@ export default {
 }
 
 .score__item:last-child {
-  margin-right: 0;
+  margin-right: 20px;
 }
 
 .score__item:hover {
-  background-color: rgb(207, 205, 205);
-}
-
-.scores__title {
-  color: black;
-  font-size: calc(1.2vw);
+  background-color: #63636353;
 }
 
 .scores__counter {
@@ -444,7 +462,7 @@ export default {
   vertical-align: middle;
   letter-spacing: -0.2px;
   font-weight: 200;
-  color: rgba(31, 31, 31, 0.6);
+  color: rgba(173, 171, 171, 0.889);
 }
 
 .title-main {
@@ -456,14 +474,16 @@ export default {
   height: 400px;
   width: 300px;
   border-radius: 4px;
+  display: flex;
 }
 
 .title-left__poster img {
-  border: 1px solid rgb(229, 226, 226);
+  border: 1px solid rgb(67, 67, 67);
   width: 100%;
   height: auto;
   object-fit: cover;
   overflow: hidden;
+  border-radius: 10px;
 }
 
 .title-center {
@@ -504,8 +524,7 @@ export default {
 
 .title-center__line:after {
   content: "Недостаточно оценок, \A рейтинг формируется";
-  white-space: pre;
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(251, 249, 249, 0.889);
   font-size: 13px;
   line-height: normal;
   margin-left: 15px;
@@ -519,8 +538,8 @@ export default {
 
 .min-age {
   display: inline-block;
-  color: rgba(31, 31, 31, 0.4);
-  border: 1px solid rgba(31, 31, 31, 0.4);
+  color: rgba(185, 182, 182, 0.889);
+  border: 1px solid rgba(185, 182, 182, 0.889);
   padding: 1px 3px 0;
   font-size: 11px;
   font-weight: 600;
@@ -530,9 +549,9 @@ export default {
 }
 
 .raiting-count {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(88, 87, 87, 0.909);
   margin-left: 6px;
-  font-size: calc(10px + 2.2vw);
+  font-size: calc(6px + 2.2vw);
   font-weight: 200;
 }
 
@@ -542,7 +561,7 @@ export default {
 }
 
 .title-center__heading {
-  color: #1f1f1f;
+  color: rgba(251, 249, 249, 0.889);
   font-size: 24px;
   line-height: 30px;
   font-weight: 700;
@@ -562,7 +581,7 @@ export default {
 }
 
 .point {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(251, 249, 249, 0.889);
   font-size: 15px;
   min-width: 150px;
   line-height: 18px;
@@ -571,7 +590,7 @@ export default {
 
 .value {
   padding: 8px 0;
-  color: #333;
+  color: rgba(187, 186, 186, 0.889);
   font-size: 13px;
   line-height: 18px;
 }
@@ -596,7 +615,7 @@ export default {
 }
 
 .title-center__tickets:hover {
-  background: rgb(70, 95, 252);
+  background: rgb(43, 69, 240);
 }
 
 .title-center__status {
@@ -609,7 +628,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(234, 229, 229, 0.746);
+  color: rgba(251, 249, 249, 0.889);
+  background-color: rgba(59, 59, 59, 0.424);
+  transition: all 0.4s;
 }
 
 .title-center__status span {
@@ -619,14 +640,14 @@ export default {
 }
 
 .title-center__status:hover {
-  background-color: rgb(219, 215, 215);
+  background-color: rgb(72, 71, 71);
 }
 
 .title-center__actors span {
   font-size: 20px;
   line-height: 18px;
   font-weight: bolder;
-  color: #1f1f1f;
+  color: rgba(251, 249, 249, 0.889);
 }
 
 .actor {
@@ -639,7 +660,7 @@ export default {
 
 .actor a {
   text-decoration: none;
-  color: #1f1f1f;
+  color: #adadad;
   font-weight: 600;
   transition: all 0.2s;
 }
@@ -654,7 +675,7 @@ export default {
 
 .title-bottom__ratingsection span {
   display: inline-block;
-  color: #1f1f1f;
+  color: rgba(251, 249, 249, 0.889);
   font-size: 24px;
   line-height: 30px;
   font-weight: 700;
@@ -665,7 +686,7 @@ export default {
 .title-bottom__description {
   font-size: 16px;
   line-height: 1.38;
-  color: #393939;
+  color: rgba(251, 249, 249, 0.889);
 }
 
 .title-raiting {
@@ -691,6 +712,7 @@ export default {
 
 .title-bottom__ratingImdb {
   margin-left: 25px;
+  color: rgba(181, 180, 180, 0.889);
 }
 
 .write-btn {
@@ -726,14 +748,14 @@ export default {
 
 .title-bottom__menu {
   display: inline-flex;
-  border-bottom: 1px solid rgb(214, 212, 212);
+  border-bottom: 1px solid rgba(214, 212, 212, 0.473);
   margin-bottom: 25px;
   padding-top: 3px;
 }
 
 .title-bottom__menu li {
   list-style: none;
-  color: #1f1f1f;
+  color: rgba(251, 249, 249, 0.889);
   z-index: 1;
   padding-bottom: 13px;
   font-size: 16px;

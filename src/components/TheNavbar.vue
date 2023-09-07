@@ -129,6 +129,8 @@ export default {
 }
 
 .entrance {
+  right: 0;
+  position: absolute;
   cursor: pointer;
   color: white;
   transition: all 0.4s;
@@ -165,9 +167,10 @@ export default {
 
 .navbar {
   position: fixed;
-  background-color: black;
+  background-color: rgba(23, 22, 22, 0.949);
   width: 100vw;
   z-index: 30;
+  border-bottom: 1px solid rgba(188, 179, 174, 0.305);
 }
 
 .havbar__inside {
@@ -234,6 +237,7 @@ export default {
 .menu {
   display: flex;
   justify-content: center;
+  margin-right: 200px;
 }
 
 .menu__item {
@@ -246,7 +250,7 @@ export default {
 }
 
 .menu__item-link {
-  color: rgb(88, 87, 87);
+  color: rgb(113, 112, 112);
   text-decoration: none;
   font-size: 18px;
   white-space: nowrap;
@@ -282,7 +286,7 @@ export default {
   color: rgb(255, 255, 255);
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1012px) {
   .search {
     min-width: 260px;
   }
@@ -296,9 +300,13 @@ export default {
   }
 }
 
-@media (max-width: 850px) {
+@media (max-width: 884px) {
   .search {
-    display: none;
+    min-width: 340px;
+  }
+
+  .havbar__inside {
+    justify-content: start;
   }
 
   .menu {
@@ -307,6 +315,12 @@ export default {
 
   .burger-wrapper {
     display: block;
+  }
+}
+
+@media (max-width: 676px) {
+  .search {
+    display: none;
   }
 }
 </style>

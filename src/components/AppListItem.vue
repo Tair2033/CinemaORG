@@ -21,14 +21,15 @@ export default {
 
 .list-item {
   text-decoration: none;
-  color: black;
+  color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 40px;
+  padding: 10px 40px;
   margin: 10px;
   min-width: 800px;
   border-radius: 4px;
+  border: 1px solid rgba(37, 37, 37, 0.431);
   transition-property: background-color, color;
   transition-duration: 0.15s;
 }

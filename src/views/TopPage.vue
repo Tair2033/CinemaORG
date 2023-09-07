@@ -203,7 +203,7 @@ export default {
 .line {
   width: 100%;
   height: 1px;
-  background-color: #c5c3c3;
+  background-color: #676666;
   margin: 23px 0;
 }
 
@@ -271,13 +271,13 @@ export default {
   font-size: 40px;
   font-weight: 700;
   line-height: 48px;
-  color: #222;
+  color: #cecece;
 }
 
 .top__paragraph {
   margin: 0;
   line-height: 22px;
   font-weight: 300;
-  color: #333;
+  color: #a5a5a5;
 }
 </style>
