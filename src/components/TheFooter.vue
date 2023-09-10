@@ -1,15 +1,9 @@
 <template>
-    <div class="footer">
-
-    </div>
+  <div class="footer"></div>
 </template>
 
 <script>
-export default {
-
-}
+  export default {};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

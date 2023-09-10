@@ -6,31 +6,31 @@
 </template>
 
 <script>
-import navbar from "@/components/TheNavbar";
+  import navbar from '@/components/TheNavbar';
 
-export default {
-  components: { navbar }
-};
+  export default {
+    components: { navbar }
+  };
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap');
 
-* {
-  padding: 0;
-  margin: 0;
+  * {
+    padding: 0;
+    margin: 0;
 
-  box-sizing: border-box;
-}
+    box-sizing: border-box;
+  }
 
-body {
-  font-family: 'Nunito', sans-serif;
-  overflow-x: hidden;
-  background-color: rgb(13, 13, 13);
-}
+  body {
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+    background-color: rgb(13, 13, 13);
+  }
 
-.container {
-  max-width: 1178px;
-  margin: 0 auto;
-}
+  .container {
+    max-width: 1178px;
+    margin: 0 auto;
+  }
 </style>

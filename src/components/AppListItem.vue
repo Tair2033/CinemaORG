@@ -7,41 +7,41 @@
 </template>
 
 <script>
-export default {
-  props: ["title"],
-};
+  export default {
+    props: ['title']
+  };
 </script>
 
 <style scoped>
-.img {
-  width: 88px;
-  height: 88px;
-  border-radius: 4px;
-}
+  .img {
+    width: 88px;
+    height: 88px;
+    border-radius: 4px;
+  }
 
-.list-item {
-  text-decoration: none;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 40px;
-  margin: 10px;
-  min-width: 800px;
-  border-radius: 4px;
-  border: 1px solid rgba(37, 37, 37, 0.431);
-  transition-property: background-color, color;
-  transition-duration: 0.15s;
-}
+  .list-item {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    margin: 10px;
+    min-width: 800px;
+    border-radius: 4px;
+    border: 1px solid rgba(37, 37, 37, 0.431);
+    transition-property: background-color, color;
+    transition-duration: 0.15s;
+  }
 
-.list-item:hover {
-  background-color: rgb(202, 200, 200);
-  color: rgb(197, 130, 29);
-}
+  .list-item:hover {
+    background-color: rgb(202, 200, 200);
+    color: rgb(197, 130, 29);
+  }
 
-.list-title {
-  font-weight: bold;
-  font-size: 24px;
-  margin-left: 20px;
-}
+  .list-title {
+    font-weight: bold;
+    font-size: 24px;
+    margin-left: 20px;
+  }
 </style>
