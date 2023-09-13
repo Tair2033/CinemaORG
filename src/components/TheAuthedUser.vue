@@ -17,10 +17,10 @@ export default {
   },
   methods: {
     hideUserPop () {
-      store.dispatch('toggleUserPopup');
+      store.commit('toggleUserPopup');
     },
     togglePopup () {
-      store.dispatch('toggleUserPopup');
+      store.commit('toggleUserPopup');
     }
   },
   props: {

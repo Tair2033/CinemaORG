@@ -199,7 +199,7 @@ export default {
           break;
       }
 
-      store.dispatch('disableMoviesPageStatus');
+      store.commit('disableMoviesPageStatus');
 
       this.getContent(this.$store.state.pageCounter);
     },
@@ -213,7 +213,7 @@ export default {
 
       const url = `https://kinopoiskapiunofficial.tech/api/v2.2/films?order=${this.filterItems.sortType}&type=${this.filterItems.currentType}&ratingFrom=${this.filterItems.minRating}&ratingTo=${this.filterItems.maxRating}&yearFrom=${this.filterItems.minYear}&yearTo=${this.filterItems.maxYear}${result}&page=${page} `;
 
-      store.dispatch('disableMoviesPageStatus');
+      store.commit('disableMoviesPageStatus');
 
       await fetch(url, {
         method: 'GET',
@@ -229,7 +229,7 @@ export default {
           };
 
           this.content = [...json.items];
-          store.dispatch('toggleMoviesPageStatus');
+          store.commit('toggleMoviesPageStatus');
         })
         .catch((err) => console.log(err));
     }

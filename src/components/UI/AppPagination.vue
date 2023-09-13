@@ -76,7 +76,7 @@
         return null;
       },
       previous() {
-        store.dispatch('previousPage');
+        store.commit('previousPage');
         this.callback(this.$store.state.pageCounter);
 
         window.scrollTo({
@@ -84,7 +84,7 @@
         });
       },
       next() {
-        store.dispatch('nextPage');
+        store.commit('nextPage');
         this.callback(this.$store.state.pageCounter);
 
         window.scrollTo({

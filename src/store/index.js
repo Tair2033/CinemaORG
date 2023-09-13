@@ -51,30 +51,5 @@ export default new Vuex.Store({
       state.loading.filmList = !state.loading.filmList;
     }
   },
-  actions: {
-    login(context) {
-      context.commit('login');
-    },
-    changePage(context, page) {
-      context.commit('changePage', page);
-    },
-    previousPage(context) {
-      context.commit('previousPage');
-    },
-    nextPage(context) {
-      context.commit('nextPage');
-    },
-    toggleUserPopup(context) {
-      context.commit('toggleUserPopup');
-    },
-    toggleMoviesPageStatus(content) {
-      content.commit('toggleMoviesPageStatus');
-    },
-    disableMoviesPageStatus(content) {
-      content.commit('disableMoviesPageStatus');
-    },
-    toggleFilmList(context) {
-      context.commit('toggleFilmList');
-    }
-  }
+  actions: {}
 });

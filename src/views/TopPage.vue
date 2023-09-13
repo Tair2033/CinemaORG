@@ -127,7 +127,7 @@ export default {
         .then((json) => {
           this.content = [...json.films];
 
-          // this.settings.totalPages = json.pagesCount;
+          this.settings.totalPages = json.pagesCount;
 
           this.$store.state.loading.topPage = false;
         })

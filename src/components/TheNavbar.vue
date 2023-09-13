@@ -64,7 +64,7 @@ export default {
   },
   methods: {
     login () {
-      store.dispatch('login');
+      store.commit('login');
     },
     hideSearchField (e) {
       this.searchInputValue = '';
