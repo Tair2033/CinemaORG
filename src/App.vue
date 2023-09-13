@@ -1,15 +1,15 @@
 <template>
   <div id="app" ref="container">
-    <navbar></navbar>
+    <Navbar></Navbar>
     <router-view />
   </div>
 </template>
 
 <script>
-  import navbar from '@/components/TheNavbar';
+  import Navbar from '@/components/TheNavbar';
 
   export default {
-    components: { navbar }
+    components: { Navbar }
   };
 </script>
 
