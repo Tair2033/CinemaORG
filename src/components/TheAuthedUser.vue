@@ -1,5 +1,5 @@
 <template>
-  <div class="authed" @click="togglePopup">
+  <div class="authed" @mouseenter="togglePopup" @mouseleave="togglePopup">
     <div class="authed-button">
       <img :src="user.ico" class="authed-button__image" />
     </div>

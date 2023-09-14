@@ -55,7 +55,7 @@
             </div>
           </div>
 
-          <div class="facts__wrapper">
+          <div class="facts__wrapper" v-if="actor.facts.length > 0">
             <div class="facts__title">Факты</div>
             <div class="facts__fact" v-for="(fact, id) in actor.facts" :key="id">
               {{ id + 1 }}. {{ fact }}

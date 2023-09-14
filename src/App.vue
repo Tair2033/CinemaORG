@@ -1,36 +1,48 @@
 <template>
   <div id="app" ref="container">
     <Navbar></Navbar>
-    <router-view />
+    <transition name="main">
+      <router-view />
+    </transition>
   </div>
 </template>
 
 <script>
-  import Navbar from '@/components/TheNavbar';
+import Navbar from '@/components/TheNavbar';
 
-  export default {
-    components: { Navbar }
-  };
+export default {
+  components: { Navbar }
+};
 </script>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap');
 
-  * {
-    padding: 0;
-    margin: 0;
+.main-enter-active,
+.main-leave-active {
+  transition: opacity 0.4s ease;
+}
 
-    box-sizing: border-box;
-  }
+.main-enter-from,
+.main-leave-to {
+  opacity: 0;
+}
 
-  body {
-    font-family: 'Nunito', sans-serif;
-    overflow-x: hidden;
-    background-color: rgb(13, 13, 13);
-  }
+* {
+  padding: 0;
+  margin: 0;
 
-  .container {
-    max-width: 1178px;
-    margin: 0 auto;
-  }
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+  overflow-x: hidden;
+  background-color: rgb(13, 13, 13);
+}
+
+.container {
+  max-width: 1178px;
+  margin: 0 auto;
+}
 </style>
