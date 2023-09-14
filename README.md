@@ -4,5 +4,4 @@
 
 ## Preview
 
-https://github.com/Tair2033/CinemaORG/assets/63341187/428dd70b-edd9-4b0a-af9a-05264548516a
-
+https://github.com/Tair2033/CinemaORG/assets/63341187/2a9d85fe-655f-407f-88b1-687bb7683b38
