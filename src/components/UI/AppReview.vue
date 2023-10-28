@@ -9,7 +9,8 @@
       </div>
 
       <div class="review__main">
-        <div class="review__description" ref="description">
+        <div class="review__description" :class="{activeStyle: isShown}" ref="description" 
+        @click="isShown = !isShown">
           <div class="review__all">Открыть весь отзыв</div>
         </div>
       </div>
@@ -38,6 +39,7 @@ export default {
   name: 'Review',
   data () {
     return {
+      isShown: false,
       isFull: false
     };
   },
@@ -62,10 +64,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
+
 .review {
   &__wrapper {
     cursor: default;
-    max-width: 700px;
     padding: 25px 30px;
     border-radius: 14px;
     margin-bottom: 20px;
@@ -80,11 +82,11 @@ export default {
 
   &__title {
     font-size: calc(10px + 1.2vw);
-    font-weight: 600;
+    font-weight: 800;
   }
 
   &__date {
-    font-size: calc(1vw);
+    font-size: calc(8px + 1vw);
     font-weight: 600;
     margin-left: 10px;
   }
@@ -92,7 +94,16 @@ export default {
   &__main {}
 
   &__description {
-    font-size: calc(1.1vw);
+    max-height: 260px;
+    overflow: hidden;
+    font-size: calc(13px + 0.4vw);
+    box-shadow: -2px -33px 28px -14px rgba(21, 35, 46, 0.2) inset;
+    transition: all 0.4s;
+    cursor: pointer;
+  }
+
+  &__description:hover {
+    box-shadow: -2px -33px 28px -16px rgba(101, 163, 210, 0.2) inset;
   }
 
   &__bottom {
@@ -134,7 +145,6 @@ export default {
     align-items: center;
     padding: 10px 5px;
     border-radius: 10px;
-    background-color: rgba(94, 94, 94, 0.193);
     margin-right: 30px;
     font-size: calc(1.3vw);
     color: rgb(8, 133, 10);
@@ -154,7 +164,6 @@ export default {
     padding: 10px 5px;
     border-radius: 10px;
     color: red;
-    background-color: rgba(94, 94, 94, 0.193);
   }
 
   &__raiting-negative:hover {
@@ -167,4 +176,14 @@ export default {
     color: black;
   }
 }
+
+.activeStyle {
+  max-height: max-content;
+  box-shadow: none;
+}
+
+.activeStyle:hover {
+  box-shadow: none;
+}
+
 </style>

@@ -18,7 +18,9 @@
             </div>
           </form>
 
-          <app-pop-up type="SEARCH" :data="searchItems" v-if="$store.state.popup.search"></app-pop-up>
+          <Transition name="search">
+            <app-pop-up type="SEARCH" :data="searchItems" v-if="$store.state.popup.search"></app-pop-up>
+          </Transition>
         </div>
         <ul class="menu">
           <li class="menu__item">
@@ -114,6 +116,20 @@ export default {
 </script>
 
 <style scoped>
+
+.search-active,
+.search-leave-active {
+  transition: all 0.8s;
+}
+
+.search-to {
+  opacity: 1;
+}
+
+.search-enter-from, .search-leave-to {
+  opacity: 0;
+}
+
 .router-link-active {
   color: white;
 }

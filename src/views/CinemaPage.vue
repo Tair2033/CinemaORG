@@ -364,7 +364,7 @@ export default {
   display: flex;
   justify-content: start;
   align-items: center;
-  width: 40vw;
+  width: 25vw;
   margin-bottom: 10px;
 }
 
